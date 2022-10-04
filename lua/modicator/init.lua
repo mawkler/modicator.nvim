@@ -3,27 +3,30 @@ local api = vim.api
 local M = {}
 
 --- Gets the foreground color value of `group`
-M.get_fg_highlight = function(group)
+--- @param group string
+--- @return string
+M.get_highlight_fg = function(group)
   return api.nvim_get_hl_by_name(group, true).foreground
 end
 
 local options = {
   highlights = {
     modes = {
-      ['n']  = M.get_fg_highlight('CursorLineNr'),
-      ['i']  = M.get_fg_highlight('Question'),
-      ['v']  = M.get_fg_highlight('Statement'),
-      ['V']  = M.get_fg_highlight('Statement'),
-      [''] = M.get_fg_highlight('Statement'),
-      ['s']  = M.get_fg_highlight('Keyword'),
-      ['S']  = M.get_fg_highlight('Keyword'),
-      ['R']  = M.get_fg_highlight('Title'),
-      ['c']  = M.get_fg_highlight('Special'),
+      ['n']  = M.get_highlight_fg('CursorLineNr'),
+      ['i']  = M.get_highlight_fg('Question'),
+      ['v']  = M.get_highlight_fg('Statement'),
+      ['V']  = M.get_highlight_fg('Statement'),
+      [''] = M.get_highlight_fg('Statement'),
+      ['s']  = M.get_highlight_fg('Keyword'),
+      ['S']  = M.get_highlight_fg('Keyword'),
+      ['R']  = M.get_highlight_fg('Title'),
+      ['c']  = M.get_highlight_fg('Special'),
     },
   },
 }
 
 --- Sets the foreground value of the `CursorLineNr` highlight group to `color`
+--- @param color string
 M.set_highlight = function(color)
   local base_highlight = api.nvim_get_hl_by_name('CursorLineNr', true)
   local opts = vim.tbl_extend('keep', { foreground = color }, base_highlight)
