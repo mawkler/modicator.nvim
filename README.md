@@ -31,7 +31,7 @@ use { 'melkster/modicator.nvim',
 
 Use `highlights.modes` to set the color for each mode, and pass it to `.setup()`. The key for each color is the output `mode()` for that mode. Check out `:help mode()` for more information.
 
-For normal mode, Modicator uses the `CursorLineNr`'s `fg` highlight. The other highligt keys `CursorLineNr` of (`bg`, `gui`, `bold`, etc.) are preserved when you switch to other modes. Modicator only modifies `CursorLineNr`'s `fg` color.
+For normal mode, Modicator uses the `CursorLineNr`'s `fg` highlight. The other highligt keys of `CursorLineNr` (`bg`, `gui`, `bold`, etc.) are preserved when you switch to other modes. Modicator only modifies `CursorLineNr`'s `fg` color.
 
 **Default configuration:**
 
