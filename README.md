@@ -12,6 +12,8 @@ A small Neovim plugin that changes the foreground color of the `CursorLineNr` hi
 require('modicator').setup()
 ```
 
+Note that modicator requires you to have `termguicolors` set. In Lua this is done by adding `vim.o.termguicolors = true` somewhere in your configuration.
+
 Modicator sets the Normal mode highlight foreground based on the default foreground color of `CursorLineNr` so if you're using a colorscheme make sure that it gets loaded before this plugin.
 
 With [packer.nvim](https://github.com/wbthomason/packer.nvim/) this is done like this:
