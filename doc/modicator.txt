@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.5.0          Last change: 2022 October 07
+*modicator.txt*          For NVIM v0.5.0         Last change: 2022 November 03
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -26,6 +26,9 @@ SETUP                                                        *modicator-setup*
     require('modicator').setup()
 <
 
+
+Note that modicator requires you to have `termguicolors` set. In Lua this is
+done by adding `vim.o.termguicolors = true` somewhere in your configuration.
 
 Modicator sets the Normal mode highlight foreground based on the default
 foreground color of `CursorLineNr` so if you’re using a colorscheme make sure
