@@ -21,6 +21,12 @@ With [packer.nvim](https://github.com/wbthomason/packer.nvim/) this is done like
 ```lua
 use { 'melkster/modicator.nvim',
   after = 'onedark.nvim', -- Add your colorscheme plugin here
+  setup = function()
+    -- There are required for Modicator to work
+    vim.o.cursorline = true
+    vim.o.number = true
+    vim.o.termguicolors = true
+  end,
   config = function()
     require('modicator').setup({
       -- ...
@@ -42,8 +48,6 @@ local modicator = require('modicator')
 
 modicator.setup({
   -- NOTE: Modicator requires line_numbers and cursorline to be enabled
-  line_numbers = true,
-  cursorline = true,
   highlights = {
     modes = {
       ['i'] = modicator.get_highlight_fg('Question'),

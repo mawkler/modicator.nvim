@@ -10,8 +10,6 @@ M.get_highlight_fg = function(group)
 end
 
 local options = {
-  line_numbers = true,
-  cursorline = true,
   highlights = {
     modes = {
       ['n']  = M.get_highlight_fg('CursorLineNr'),
@@ -63,8 +61,6 @@ function M.setup(opts)
   check_termguicolors()
 
   options = vim.tbl_deep_extend('force', options, opts or {})
-  vim.o.cursorline = options.cursorline
-  vim.o.number = options.line_numbers
 
   create_autocmd()
 end
