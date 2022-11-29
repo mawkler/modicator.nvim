@@ -46,19 +46,23 @@ local function create_autocmd()
   })
 end
 
-local function check_termguicolors()
-  if not vim.o.termguicolors then
-    vim.notify(
-      'modicator.nvim requires termguicolors to be set. To solve this, run ' ..
-      '`:set termguicolors` or add `vim.o.termguicolors = true` to your ' ..
-      'init.lua',
-      vim.log.levels.WARN
+local function check_option(option)
+  if not vim.o[option] then
+    local message = string.format(
+      'modicator.nvim requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
+        .. '= true` to your init.lua',
+      option,
+      option,
+      option
     )
+    vim.notify(message, vim.log.levels.WARN)
   end
 end
 
 function M.setup(opts)
-  check_termguicolors()
+  for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
+    check_option(opt)
+  end
 
   options = vim.tbl_deep_extend('force', options, opts or {})
 
