@@ -10,6 +10,7 @@ M.get_highlight_fg = function(group)
 end
 
 local options = {
+  show_warnings = true, -- Show warning if any required option is missing
   highlights = {
     modes = {
       ['n']  = M.get_highlight_fg('CursorLineNr'),
@@ -60,11 +61,13 @@ local function check_option(option)
 end
 
 function M.setup(opts)
-  for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
-    check_option(opt)
-  end
-
   options = vim.tbl_deep_extend('force', options, opts or {})
+
+  if options.show_warnings then
+    for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
+      check_option(opt)
+    end
+  end
 
   create_autocmd()
 end
