@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.5.0         Last change: 2022 November 29
+*modicator.txt*          For NVIM v0.5.0         Last change: 2022 November 30
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -41,7 +41,7 @@ this:
     use { 'melkster/modicator.nvim',
       after = 'onedark.nvim', -- Add your colorscheme plugin here
       setup = function()
-        -- There are required for Modicator to work
+        -- These are required for Modicator to work
         vim.o.cursorline = true
         vim.o.number = true
         vim.o.termguicolors = true
@@ -71,8 +71,9 @@ color.
 >
     local modicator = require('modicator')
     
+    -- NOTE: Modicator requires line_numbers and cursorline to be enabled
     modicator.setup({
-      -- NOTE: Modicator requires line_numbers and cursorline to be enabled
+      show_warnings = true, -- Show warning if any required option is missing
       highlights = {
         modes = {
           ['i'] = modicator.get_highlight_fg('Question'),
