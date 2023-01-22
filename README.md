@@ -61,5 +61,18 @@ modicator.setup({
       ['c'] = modicator.get_highlight_fg('Constant'),
     },
   },
+  formats = {
+    modes = {
+      ['n']  = { bold = false, italic = false },
+      ['i']  = { bold = false, italic = false },
+      ['v']  = { bold = false, italic = false },
+      ['V']  = { bold = false, italic = false },
+      [''] = { bold = false, italic = false },
+      ['s']  = { bold = false, italic = false },
+      ['S']  = { bold = false, italic = false },
+      ['R']  = { bold = false, italic = false },
+      ['c']  = { bold = false, italic = false },
+    },
+  },
 })
 ```
