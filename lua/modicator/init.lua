@@ -24,24 +24,42 @@ local options = {
       ['c']  = M.get_highlight_fg('Constant'),
     },
   },
+  formats = {
+    modes = {
+      ['n']  = { bold = false, italic = false },
+      ['i']  = { bold = false, italic = false },
+      ['v']  = { bold = false, italic = false },
+      ['V']  = { bold = false, italic = false },
+      [''] = { bold = false, italic = false },
+      ['s']  = { bold = false, italic = false },
+      ['S']  = { bold = false, italic = false },
+      ['R']  = { bold = false, italic = false },
+      ['c']  = { bold = false, italic = false },
+    },
+  },
 }
 
 --- Sets the foreground color value of the `CursorLineNr` highlight groups to
 --- `color`.
 --- @param color string
-M.set_highlight = function(color)
+M.set_highlight_and_format = function(color, format)
   local base_highlight = api.nvim_get_hl_by_name('CursorLineNr', true)
-  local opts = vim.tbl_extend('keep', { foreground = color }, base_highlight)
+  -- Should this be defined with these defaults?
+  local base_format = { bold = false, italic = false }
+  local opts = vim.tbl_extend('keep',
+    { foreground = color, bold = format['bold'], italic = format['italic'] },
+  base_highlight, base_format)
   api.nvim_set_hl(0, 'CursorLineNr', opts)
 end
 
 local function create_autocmd()
-  vim.api.nvim_create_augroup('Modicator', {})
-  vim.api.nvim_create_autocmd('ModeChanged', {
+  api.nvim_create_augroup('Modicator', {})
+  api.nvim_create_autocmd('ModeChanged', {
     callback = function()
       local mode = api.nvim_get_mode().mode
       local color = options.highlights.modes[mode] or options.highlights.modes.n
-      M.set_highlight(color)
+      local format = options.formats.modes[mode] or options.formats.modes.n
+      M.set_highlight_and_format(color, format)
     end,
     group = 'Modicator'
   })
