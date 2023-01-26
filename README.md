@@ -35,6 +35,24 @@ use { 'melkster/modicator.nvim',
 }
 ```
 
+Or with [lazy.nvim](https://github.com/folke/lazy.nvim/):
+```lua
+return {
+  'mawkler/modicator.nvim',
+  dependencies = 'onedark.nvim' -- Add your colorscheme plugin here,
+  init = function()
+    vim.o.cursorline = true
+    vim.o.number = true
+    vim.o.termguicolors = true
+  end,
+  config = function()
+    require('modicator').setup({
+      -- ...
+    })
+  end,
+}
+```
+
 ## Configuration
 
 Use `highlights.modes` to set the color for each mode, and pass it to `.setup()`. The key for each color is the output `mode()` for that mode. Check out `:help mode()` for more information.
@@ -50,28 +68,59 @@ local modicator = require('modicator')
 modicator.setup({
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
-    modes = {
-      ['i'] = modicator.get_highlight_fg('Question'),
-      ['v'] = modicator.get_highlight_fg('Type'),
-      ['V'] = modicator.get_highlight_fg('Type'),
-      [''] = modicator.get_highlight_fg('Type'),
-      ['s'] = modicator.get_highlight_fg('Keyword'),
-      ['S'] = modicator.get_highlight_fg('Keyword'),
-      ['R'] = modicator.get_highlight_fg('Title'),
-      ['c'] = modicator.get_highlight_fg('Constant'),
+    -- Options in `overrides` will apply to every mode, regardless of
+    -- settings in the `modes` table. Useful if you want to apply a style
+    -- to every mode.
+    overrides = {
+      bold = false,
+      bold = false
     },
-  },
-  formats = {
     modes = {
-      ['n']  = { bold = false, italic = false },
-      ['i']  = { bold = false, italic = false },
-      ['v']  = { bold = false, italic = false },
-      ['V']  = { bold = false, italic = false },
-      [''] = { bold = false, italic = false },
-      ['s']  = { bold = false, italic = false },
-      ['S']  = { bold = false, italic = false },
-      ['R']  = { bold = false, italic = false },
-      ['c']  = { bold = false, italic = false },
+      ['n'] = {
+        color = M.get_highlight_fg('CursorLineNr'),
+        bold = false,
+        italic = false,
+      },
+      ['i']  = {
+        color = M.get_highlight_fg('Question'),
+        bold = false,
+        italic = false,
+      },
+      ['v']  = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['V']  = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['�'] = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['s']  = {
+        color = M.get_highlight_fg('Keyword'),
+        bold = false,
+        italic = false,
+      },
+      ['S']  = {
+        color = M.get_highlight_fg('Keyword'),
+        bold = false,
+        italic = false,
+      },
+      ['R']  = {
+        color = M.get_highlight_fg('Title'),
+        bold = false,
+        italic = false,
+      },
+      ['c']  = {
+        color = M.get_highlight_fg('Constant'),
+        bold = false,
+        italic = false,
+      },
     },
   },
 })
