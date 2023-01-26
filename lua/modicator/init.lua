@@ -12,44 +12,71 @@ end
 local options = {
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
-    modes = {
-      ['n']  = M.get_highlight_fg('CursorLineNr'),
-      ['i']  = M.get_highlight_fg('Question'),
-      ['v']  = M.get_highlight_fg('Type'),
-      ['V']  = M.get_highlight_fg('Type'),
-      [''] = M.get_highlight_fg('Type'),
-      ['s']  = M.get_highlight_fg('Keyword'),
-      ['S']  = M.get_highlight_fg('Keyword'),
-      ['R']  = M.get_highlight_fg('Title'),
-      ['c']  = M.get_highlight_fg('Constant'),
+    overrides = {
+      bold = false,
+      bold = false
     },
-  },
-  formats = {
     modes = {
-      ['n']  = { bold = false, italic = false },
-      ['i']  = { bold = false, italic = false },
-      ['v']  = { bold = false, italic = false },
-      ['V']  = { bold = false, italic = false },
-      [''] = { bold = false, italic = false },
-      ['s']  = { bold = false, italic = false },
-      ['S']  = { bold = false, italic = false },
-      ['R']  = { bold = false, italic = false },
-      ['c']  = { bold = false, italic = false },
+      ['n'] = {
+        color = M.get_highlight_fg('CursorLineNr'),
+        bold = false,
+        italic = false,
+      },
+      ['i']  = {
+        color = M.get_highlight_fg('Question'),
+        bold = false,
+        italic = false,
+      },
+      ['v']  = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['V']  = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['�'] = {
+        color = M.get_highlight_fg('Type'),
+        bold = false,
+        italic = false,
+      },
+      ['s']  = {
+        color = M.get_highlight_fg('Keyword'),
+        bold = false,
+        italic = false,
+      },
+      ['S']  = {
+        color = M.get_highlight_fg('Keyword'),
+        bold = false,
+        italic = false,
+      },
+      ['R']  = {
+        color = M.get_highlight_fg('Title'),
+        bold = false,
+        italic = false,
+      },
+      ['c']  = {
+        color = M.get_highlight_fg('Constant'),
+        bold = false,
+        italic = false,
+      },
     },
   },
 }
 
---- Sets the foreground color value of the `CursorLineNr` highlight groups to
---- `color`.
---- @param color string
-M.set_highlight_and_format = function(color, format)
-  local base_highlight = api.nvim_get_hl_by_name('CursorLineNr', true)
-  -- Should this be defined with these defaults?
-  local base_format = { bold = false, italic = false }
-  local opts = vim.tbl_extend('keep',
-    { foreground = color, bold = format['bold'], italic = format['italic'] },
-  base_highlight, base_format)
-  api.nvim_set_hl(0, 'CursorLineNr', opts)
+--- Set the foreground color, bold text, and italic text
+--- of 'CursorLineNr'.
+--- @param format table
+M.set_format = function(format)
+  local ors = options.highlights.overrides
+  local args = {
+    foreground = format.color,
+    bold = has_overrides and ors.bold or format.bold,
+    italic = has_overrides and ors.italic or format.italic
+  } 
+  api.nvim_set_hl(0, 'CursorLineNr', args)
 end
 
 local function create_autocmd()
@@ -57,9 +84,8 @@ local function create_autocmd()
   api.nvim_create_autocmd('ModeChanged', {
     callback = function()
       local mode = api.nvim_get_mode().mode
-      local color = options.highlights.modes[mode] or options.highlights.modes.n
-      local format = options.formats.modes[mode] or options.formats.modes.n
-      M.set_highlight_and_format(color, format)
+      local format = options.highlights.modes[mode] or options.highlights.modes.n
+      M.set_format(format)
     end,
     group = 'Modicator'
   })
@@ -81,6 +107,9 @@ end
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
 
+  --- If the user options have overrides, make sure
+  --- that we use them in M.set_format.
+  has_overrides = opts.highlights.overrides
   if options.show_warnings then
     for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
       check_option(opt)
