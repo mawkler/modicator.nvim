@@ -75,7 +75,8 @@ M.set_highlight = function(format)
     bold = format.bold,
     italic = format.italic
   }
-  vim.tbl_extend('force', options.highlights.overrides, args)
+  args = vim.tbl_extend('keep', options.highlights.overrides, args)
+  print(vim.inspect(args))
   api.nvim_set_hl(0, 'CursorLineNr', args)
 end
 
