@@ -70,12 +70,12 @@ local options = {
 --- of 'CursorLineNr'.
 --- @param format table
 M.set_highlight = function(format)
-  local ors = options.highlights.overrides
   local args = {
     foreground = format.color,
-    bold = has_overrides and ors.bold or format.bold,
-    italic = has_overrides and ors.italic or format.italic
-  } 
+    bold = format.bold,
+    italic = format.italic
+  }
+  vim.tbl_extend('force', options.highlights.overrides, args)
   api.nvim_set_hl(0, 'CursorLineNr', args)
 end
 
@@ -107,9 +107,6 @@ end
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
 
-  --- If the user options have overrides, make sure
-  --- that we use them in M.set_format.
-  has_overrides = opts.highlights.overrides
   if options.show_warnings then
     for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
       check_option(opt)
