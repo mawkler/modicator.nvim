@@ -14,7 +14,7 @@ local options = {
   highlights = {
     overrides = {
       bold = false,
-      bold = false
+      italic = false
     },
     modes = {
       ['n'] = {
