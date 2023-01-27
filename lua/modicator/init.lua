@@ -69,7 +69,7 @@ local options = {
 --- Set the foreground color, bold text, and italic text
 --- of 'CursorLineNr'.
 --- @param format table
-M.set_format = function(format)
+M.set_highlight = function(format)
   local ors = options.highlights.overrides
   local args = {
     foreground = format.color,
@@ -85,7 +85,7 @@ local function create_autocmd()
     callback = function()
       local mode = api.nvim_get_mode().mode
       local format = options.highlights.modes[mode] or options.highlights.modes.n
-      M.set_format(format)
+      M.set_highlight(format)
     end,
     group = 'Modicator'
   })
