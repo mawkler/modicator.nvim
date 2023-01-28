@@ -68,7 +68,7 @@ local modicator = require('modicator')
 modicator.setup({
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
-    -- Options in `overrides` will apply to every mode, regardless of
+    -- Options in `defaults` will apply to every mode, regardless of
     -- settings in the `modes` table. Useful if you want to apply a style
     -- to every mode.
     defaults = {
