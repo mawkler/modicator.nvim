@@ -71,9 +71,9 @@ modicator.setup({
     -- Options in `overrides` will apply to every mode, regardless of
     -- settings in the `modes` table. Useful if you want to apply a style
     -- to every mode.
-    overrides = {
+    defaults = {
       bold = false,
-      bold = false
+      italic = false
     },
     modes = {
       ['n'] = {

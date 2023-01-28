@@ -12,7 +12,7 @@ end
 local options = {
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
-    overrides = {
+    defaults = {
       bold = false,
       italic = false
     },
@@ -75,7 +75,7 @@ M.set_highlight = function(format)
     bold = format.bold,
     italic = format.italic
   }
-  args = vim.tbl_extend('keep', options.highlights.overrides, args)
+  args = vim.tbl_extend('keep', options.highlights.defaults, args)
   api.nvim_set_hl(0, 'CursorLineNr', args)
 end
 
