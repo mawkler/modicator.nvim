@@ -16,7 +16,7 @@ A small Neovim plugin that changes the foreground color of the `CursorLineNr`
 highlight based on the current Vim mode.
 
 <div class="figure">
-<img src="https://user-images.githubusercontent.com/15816726/194103616-5fb6d1d3-5049-43cd-83da-20ed0c207d42.gif" title="fig:"/>
+<img src="https://user-images.githubusercontent.com/15816726/215295524-091c553b-5dfe-4994-82e8-ae5c4899e88f.gif" title="fig:"/>
 <p class="caption">modicator</p>
 </div>
 
