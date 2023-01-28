@@ -9,74 +9,60 @@ M.get_highlight_fg = function(group)
   return api.nvim_get_hl_by_name(group, true).foreground
 end
 
+--- Gets the background color value of `group`.
+--- @param group string
+--- @return string
+M.get_highlight_bg = function(group)
+  return api.nvim_get_hl_by_name(group, true).background
+end
+
 local options = {
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
     defaults = {
+      foreground = M.get_highlight_fg('CursorLineNr'),
+      background = M.get_highlight_bg('CursorLineNr'),
       bold = false,
       italic = false
     },
     modes = {
       ['n'] = {
-        color = M.get_highlight_fg('CursorLineNr'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('CursorLineNr'),
       },
       ['i']  = {
-        color = M.get_highlight_fg('Question'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Question'),
       },
       ['v']  = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Type'),
       },
       ['V']  = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Type'),
       },
-      ['�'] = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+      [''] = {
+        foreground = M.get_highlight_fg('Type'),
       },
       ['s']  = {
-        color = M.get_highlight_fg('Keyword'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Keyword'),
       },
       ['S']  = {
-        color = M.get_highlight_fg('Keyword'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Keyword'),
       },
       ['R']  = {
-        color = M.get_highlight_fg('Title'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Title'),
       },
       ['c']  = {
-        color = M.get_highlight_fg('Constant'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Constant'),
       },
     },
   },
 }
 
---- Set the foreground color, bold text, and italic text
---- of 'CursorLineNr'.
---- @param format table
-M.set_highlight = function(format)
-  local args = {
-    foreground = format.color,
-    bold = format.bold,
-    italic = format.italic
-  }
-  args = vim.tbl_extend('keep', options.highlights.defaults, args)
-  api.nvim_set_hl(0, 'CursorLineNr', args)
+--- Set the foreground and background color of 'CursorLineNr'. Accepts any
+--- highlight definition map that `:help nvim_set_hl()` does.
+--- @param highlight table
+M.set_highlight = function(highlight)
+  local hl = vim.tbl_extend('force', options.highlights.defaults, highlight)
+  api.nvim_set_hl(0, 'CursorLineNr', hl)
 end
 
 local function create_autocmd()

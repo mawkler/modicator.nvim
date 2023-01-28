@@ -83,55 +83,41 @@ modicator.setup({
     -- Default options for bold/italic. You can override these individually
     -- for each mode if you'd like as seen below.
     defaults = {
+      foreground = M.get_highlight_fg('CursorLineNr'),
+      background = M.get_highlight_bg('CursorLineNr'),
       bold = false,
       italic = false
     },
-    -- Color and bold/italic options for each mode
+    -- Color and bold/italic options for each mode. You can add a bold and/or
+    -- italic key pair to override the default highlight for a specific mode if
+    -- you would like.
     modes = {
       ['n'] = {
-        color = M.get_highlight_fg('CursorLineNr'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('CursorLineNr'),
       },
       ['i']  = {
-        color = M.get_highlight_fg('Question'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Question'),
       },
       ['v']  = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Type'),
       },
       ['V']  = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Type'),
       },
-      ['�'] = {
-        color = M.get_highlight_fg('Type'),
-        bold = false,
-        italic = false,
+      [''] = { -- This symbol is the ^V character
+        foreground = M.get_highlight_fg('Type'),
       },
       ['s']  = {
-        color = M.get_highlight_fg('Keyword'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Keyword'),
       },
       ['S']  = {
-        color = M.get_highlight_fg('Keyword'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Keyword'),
       },
       ['R']  = {
-        color = M.get_highlight_fg('Title'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Title'),
       },
       ['c']  = {
-        color = M.get_highlight_fg('Constant'),
-        bold = false,
-        italic = false,
+        foreground = M.get_highlight_fg('Constant'),
       },
     },
   },
