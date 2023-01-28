@@ -4,7 +4,7 @@ _Cursor line number mode indicator._
 
 A small Neovim plugin that changes the foreground color of the `CursorLineNr` highlight based on the current Vim mode.
 
-![modicator](https://user-images.githubusercontent.com/15816726/215295524-091c553b-5dfe-4994-82e8-ae5c4899e88f.gif)
+![modicator](https://user-images.githubusercontent.com/15816726/215295831-299dc732-85ae-4668-9e7b-e88cd499f18a.gif)
 
 ## Setup
 
