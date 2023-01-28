@@ -104,6 +104,21 @@ local function check_option(option)
   end
 end
 
+local function check_depricated_config(opts)
+  local modes = { 'i', 'v', 'V', '', 's', 'S', 'R', 'c' }
+
+  local depricated_opts = vim.tbl_filter(function(mode)
+    return type(opts.highlights.modes[mode]) ~= 'table'
+  end, modes)
+
+  if #depricated_opts > 0 then
+    local message = 'modicator.nvim: configuration API of `highlights.modes` '
+      .. 'has changed. Check `:help modicator-configuration` to see the new '
+      .. 'configuraition API.'
+    vim.notify(message, vim.log.levels.WARN)
+  end
+end
+
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
 
@@ -111,6 +126,7 @@ function M.setup(opts)
     for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
       check_option(opt)
     end
+    check_depricated_config(options)
   end
 
   create_autocmd()
