@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.5.0         Last change: 2022 November 30
+*modicator.txt*          For NVIM v0.8.0          Last change: 2023 January 28
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -55,6 +55,26 @@ this:
 <
 
 
+Or with lazy.nvim <https://github.com/folke/lazy.nvim/>:
+
+>
+    return {
+      'mawkler/modicator.nvim',
+      dependencies = 'onedark.nvim' -- Add your colorscheme plugin here,
+      init = function()
+        vim.o.cursorline = true
+        vim.o.number = true
+        vim.o.termguicolors = true
+      end,
+      config = function()
+        require('modicator').setup({
+          -- ...
+        })
+      end,
+    }
+<
+
+
 CONFIGURATION                                        *modicator-configuration*
 
 Use `highlights.modes` to set the color for each mode, and pass it to
@@ -62,9 +82,9 @@ Use `highlights.modes` to set the color for each mode, and pass it to
 out `:help mode()` for more information.
 
 For normal mode, Modicator uses the `CursorLineNr`’s `fg` highlight. The
-other highligt keys of `CursorLineNr` (`bg`, `gui`, `bold`, etc.) are preserved
-when you switch to other modes. Modicator only modifies `CursorLineNr`’s `fg`
-color.
+other highlight keys of `CursorLineNr` (`bg`, `gui`, `bold`, etc.) are
+preserved when you switch to other modes. Modicator only modifies
+`CursorLineNr`’s `fg` color.
 
 **Default configuration:**
 
@@ -75,15 +95,59 @@ color.
     modicator.setup({
       show_warnings = true, -- Show warning if any required option is missing
       highlights = {
+        -- Options in `defaults` will apply to every mode, regardless of
+        -- settings in the `modes` table. Useful if you want to apply a style
+        -- to every mode.
+        defaults = {
+          bold = false,
+          italic = false
+        },
         modes = {
-          ['i'] = modicator.get_highlight_fg('Question'),
-          ['v'] = modicator.get_highlight_fg('Type'),
-          ['V'] = modicator.get_highlight_fg('Type'),
-          [''] = modicator.get_highlight_fg('Type'),
-          ['s'] = modicator.get_highlight_fg('Keyword'),
-          ['S'] = modicator.get_highlight_fg('Keyword'),
-          ['R'] = modicator.get_highlight_fg('Title'),
-          ['c'] = modicator.get_highlight_fg('Constant'),
+          ['n'] = {
+            color = M.get_highlight_fg('CursorLineNr'),
+            bold = false,
+            italic = false,
+          },
+          ['i']  = {
+            color = M.get_highlight_fg('Question'),
+            bold = false,
+            italic = false,
+          },
+          ['v']  = {
+            color = M.get_highlight_fg('Type'),
+            bold = false,
+            italic = false,
+          },
+          ['V']  = {
+            color = M.get_highlight_fg('Type'),
+            bold = false,
+            italic = false,
+          },
+          ['�'] = {
+            color = M.get_highlight_fg('Type'),
+            bold = false,
+            italic = false,
+          },
+          ['s']  = {
+            color = M.get_highlight_fg('Keyword'),
+            bold = false,
+            italic = false,
+          },
+          ['S']  = {
+            color = M.get_highlight_fg('Keyword'),
+            bold = false,
+            italic = false,
+          },
+          ['R']  = {
+            color = M.get_highlight_fg('Title'),
+            bold = false,
+            italic = false,
+          },
+          ['c']  = {
+            color = M.get_highlight_fg('Constant'),
+            bold = false,
+            italic = false,
+          },
         },
       },
     })
