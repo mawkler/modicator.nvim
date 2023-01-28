@@ -27,18 +27,48 @@ SETUP                                                        *modicator-setup*
 <
 
 
-Note that modicator requires you to have `termguicolors` set. In Lua this is
-done by adding `vim.o.termguicolors = true` somewhere in your configuration.
+Note that modicator requires you to have `termguicolors`, `cursorline`,
+`number` set. In Lua this is done by adding
+
+>
+    vim.o.termguicolors = true
+    vim.o.cursorline = true
+    vim.o.number = true
+<
+
+
+somewhere in your Neovim configuration.
 
 Modicator sets the Normal mode highlight foreground based on the default
 foreground color of `CursorLineNr` so if you’re using a colorscheme make sure
 that it gets loaded before this plugin.
 
-With packer.nvim <https://github.com/wbthomason/packer.nvim/> this is done like
-this:
+With lazy.nvim <https://github.com/folke/lazy.nvim/>:
 
 >
-    use { 'melkster/modicator.nvim',
+    return {
+      'mawkler/modicator.nvim',
+      dependencies = 'mawkler/onedark.nvim' -- Add your colorscheme plugin here,
+      init = function()
+        -- These are required for Modicator to work
+        vim.o.cursorline = true
+        vim.o.number = true
+        vim.o.termguicolors = true
+      end,
+      config = function()
+        require('modicator').setup({
+          -- ...
+        })
+      end,
+    }
+<
+
+
+Or with packer.nvim <https://github.com/wbthomason/packer.nvim/>:
+
+>
+    use {
+      'mawkler/modicator.nvim',
       after = 'onedark.nvim', -- Add your colorscheme plugin here
       setup = function()
         -- These are required for Modicator to work
@@ -55,36 +85,14 @@ this:
 <
 
 
-Or with lazy.nvim <https://github.com/folke/lazy.nvim/>:
-
->
-    return {
-      'mawkler/modicator.nvim',
-      dependencies = 'onedark.nvim' -- Add your colorscheme plugin here,
-      init = function()
-        vim.o.cursorline = true
-        vim.o.number = true
-        vim.o.termguicolors = true
-      end,
-      config = function()
-        require('modicator').setup({
-          -- ...
-        })
-      end,
-    }
-<
-
-
 CONFIGURATION                                        *modicator-configuration*
 
-Use `highlights.modes` to set the color for each mode, and pass it to
-`.setup()`. The key for each color is the output `mode()` for that mode. Check
-out `:help mode()` for more information.
+Use `highlights.modes[<mode>].color` to set the color for each mode, and pass
+it to `require('modicator').setup()`, as seen below. The key for each mode is
+the output `mode()` for that mode. Check out `:help mode()` for more
+information.
 
-For normal mode, Modicator uses the `CursorLineNr`’s `fg` highlight. The
-other highlight keys of `CursorLineNr` (`bg`, `gui`, `bold`, etc.) are
-preserved when you switch to other modes. Modicator only modifies
-`CursorLineNr`’s `fg` color.
+For normal mode, Modicator uses the `CursorLineNr`’s `fg` highlight.
 
 **Default configuration:**
 
@@ -93,15 +101,16 @@ preserved when you switch to other modes. Modicator only modifies
     
     -- NOTE: Modicator requires line_numbers and cursorline to be enabled
     modicator.setup({
-      show_warnings = true, -- Show warning if any required option is missing
+      -- Show warning if any required option is missing
+      show_warnings = true,
       highlights = {
-        -- Options in `defaults` will apply to every mode, regardless of
-        -- settings in the `modes` table. Useful if you want to apply a style
-        -- to every mode.
+        -- Default options for bold/italic. You can override these individually
+        -- for each mode if you'd like as seen below.
         defaults = {
           bold = false,
           italic = false
         },
+        -- Color and bold/italic options for each mode
         modes = {
           ['n'] = {
             color = M.get_highlight_fg('CursorLineNr'),
