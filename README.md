@@ -83,8 +83,8 @@ modicator.setup({
     -- Default options for bold/italic. You can override these individually
     -- for each mode if you'd like as seen below.
     defaults = {
-      foreground = M.get_highlight_fg('CursorLineNr'),
-      background = M.get_highlight_bg('CursorLineNr'),
+      foreground = modicator.get_highlight_fg('CursorLineNr'),
+      background = modicator.get_highlight_bg('CursorLineNr'),
       bold = false,
       italic = false
     },
@@ -93,31 +93,31 @@ modicator.setup({
     -- you would like.
     modes = {
       ['n'] = {
-        foreground = M.get_highlight_fg('CursorLineNr'),
+        foreground = modicator.get_highlight_fg('CursorLineNr'),
       },
       ['i']  = {
-        foreground = M.get_highlight_fg('Question'),
+        foreground = modicator.get_highlight_fg('Question'),
       },
       ['v']  = {
-        foreground = M.get_highlight_fg('Type'),
+        foreground = modicator.get_highlight_fg('Type'),
       },
       ['V']  = {
-        foreground = M.get_highlight_fg('Type'),
+        foreground = modicator.get_highlight_fg('Type'),
       },
       [''] = { -- This symbol is the ^V character
-        foreground = M.get_highlight_fg('Type'),
+        foreground = modicator.get_highlight_fg('Type'),
       },
       ['s']  = {
-        foreground = M.get_highlight_fg('Keyword'),
+        foreground = modicator.get_highlight_fg('Keyword'),
       },
       ['S']  = {
-        foreground = M.get_highlight_fg('Keyword'),
+        foreground = modicator.get_highlight_fg('Keyword'),
       },
       ['R']  = {
-        foreground = M.get_highlight_fg('Title'),
+        foreground = modicator.get_highlight_fg('Title'),
       },
       ['c']  = {
-        foreground = M.get_highlight_fg('Constant'),
+        foreground = modicator.get_highlight_fg('Constant'),
       },
     },
   },
