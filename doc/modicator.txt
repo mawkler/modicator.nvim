@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.8.0          Last change: 2023 January 29
+*modicator.txt*          For NVIM v0.8.0         Last change: 2023 February 18
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -48,7 +48,7 @@ With lazy.nvim <https://github.com/folke/lazy.nvim/>:
 >
     return {
       'mawkler/modicator.nvim',
-      dependencies = 'mawkler/onedark.nvim' -- Add your colorscheme plugin here,
+      dependencies = 'mawkler/onedark.nvim', -- Add your colorscheme plugin here
       init = function()
         -- These are required for Modicator to work
         vim.o.cursorline = true
