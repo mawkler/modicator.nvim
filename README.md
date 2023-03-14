@@ -66,7 +66,7 @@ use {
 
 ## Configuration
 
-Use `highlights.modes[<mode>].color` to set the color for each mode, and pass it to `require('modicator').setup()`, as seen below. The key for each mode is the output `mode()` for that mode. Check out `:help mode()` for more information.
+Use `highlights.modes[<mode>]` to set the color for each mode, and pass it to `require('modicator').setup()`, as seen below. Each mode in `highlights.modes` can have a `foreground`, `background`, `bold` and `italic` entry. The key for each mode is the output `mode()` for that mode. Check out `:help mode()` for more information.
 
 For normal mode, Modicator uses the `CursorLineNr`'s `fg` highlight.
 
