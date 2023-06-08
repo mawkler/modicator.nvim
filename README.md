@@ -1,4 +1,4 @@
-# 💡 Modicator.nvim
+# Modicator.nvim 💡
 
 _Cursor line number mode indicator._
 
@@ -37,9 +37,7 @@ return {
     vim.o.termguicolors = true
   end,
   config = function()
-    require('modicator').setup({
-      -- ...
-    })
+    require('modicator').setup()
   end,
 }
 ```
@@ -57,68 +55,37 @@ use {
     vim.o.termguicolors = true
   end,
   config = function()
-    require('modicator').setup({
-      -- ...
-    })
+    require('modicator').setup()
   end
 }
 ```
 
 ## Configuration
 
-Use `highlights.modes[<mode>]` to set the color for each mode, and pass it to `require('modicator').setup()`, as seen below. Each mode in `highlights.modes` can have a `foreground`, `background`, `bold` and `italic` entry. The key for each mode is the output `mode()` for that mode. Check out `:help mode()` for more information.
+Modicator uses the the following highlight groups for each mode, respectively:
 
-For normal mode, Modicator uses the `CursorLineNr`'s `fg` highlight.
+```txt
+NormalMode
+InsertMode
+VisualMode
+CommandMode
+ReplaceMode
+SelectMode
+```
+
+For more information on how to create a highlight group, see `:help nvim_set_hl`.
 
 **Default configuration:**
 
 ```lua
-local modicator = require('modicator')
-
--- NOTE: Modicator requires line_numbers and cursorline to be enabled
-modicator.setup({
+require('modicator').setup({
   -- Show warning if any required option is missing
   show_warnings = true,
   highlights = {
-    -- Default options for bold/italic. You can override these individually
-    -- for each mode if you'd like as seen below.
+    -- Default options for bold/italic
     defaults = {
-      foreground = modicator.get_highlight_fg('CursorLineNr'),
-      background = modicator.get_highlight_bg('CursorLineNr'),
       bold = false,
       italic = false
-    },
-    -- Color and bold/italic options for each mode. You can add a bold and/or
-    -- italic key pair to override the default highlight for a specific mode if
-    -- you would like.
-    modes = {
-      ['n'] = {
-        foreground = modicator.get_highlight_fg('CursorLineNr'),
-      },
-      ['i']  = {
-        foreground = modicator.get_highlight_fg('Question'),
-      },
-      ['v']  = {
-        foreground = modicator.get_highlight_fg('Type'),
-      },
-      ['V']  = {
-        foreground = modicator.get_highlight_fg('Type'),
-      },
-      [''] = { -- This symbol is the ^V character
-        foreground = modicator.get_highlight_fg('Type'),
-      },
-      ['s']  = {
-        foreground = modicator.get_highlight_fg('Keyword'),
-      },
-      ['S']  = {
-        foreground = modicator.get_highlight_fg('Keyword'),
-      },
-      ['R']  = {
-        foreground = modicator.get_highlight_fg('Title'),
-      },
-      ['c']  = {
-        foreground = modicator.get_highlight_fg('Constant'),
-      },
     },
   },
 })
