@@ -2,15 +2,12 @@ local api = vim.api
 
 local M = {}
 
--- Gets populated by `M.setup()`
-local options = {}
-
-local default_options = {
+local options = {
   show_warnings = true, -- Show warning if any required option is missing
   highlights = {
     defaults = {
       bold = false,
-      italic = false
+      italic = false,
     },
   },
 }
@@ -121,7 +118,7 @@ local function check_deprecated_config(opts)
 end
 
 function M.setup(opts)
-  options = vim.deepcopy(vim.tbl_deep_extend('force', default_options, opts or {}))
+  options = vim.tbl_deep_extend('force', options, opts or {})
 
   if options.show_warnings then
     for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
