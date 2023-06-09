@@ -82,7 +82,7 @@ M.set_cursor_line_highlight = function(hl_group_name)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 end
 
-local function create_autocmd()
+local function create_autocmds()
   api.nvim_create_augroup('Modicator', {})
   api.nvim_create_autocmd('ModeChanged', {
     callback = function()
@@ -91,6 +91,10 @@ local function create_autocmd()
 
       M.set_cursor_line_highlight(mode_name .. 'Mode')
     end,
+    group = 'Modicator'
+  })
+  api.nvim_create_autocmd('Colorscheme', {
+    callback = set_fallback_highlight_groups,
     group = 'Modicator'
   })
 end
@@ -129,7 +133,7 @@ function M.setup(opts)
 
   set_fallback_highlight_groups()
 
-  create_autocmd()
+  create_autocmds()
 end
 
 return M
