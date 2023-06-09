@@ -51,13 +51,30 @@ end
 
 -- Link any missing mode highlight to its fallback highlight
 local function set_fallback_highlight_groups()
-  local modes = { 'Normal', 'Insert', 'Visual', 'Command', 'Replace', 'Select' }
+  local modes = {
+    'Normal',
+    'Insert',
+    'Visual',
+    'Command',
+    'Replace',
+    'Select',
+    'Terminal',
+    'TerminalNormal',
+  }
 
   for _, mode in pairs(modes) do
     local hl_name = mode .. 'Mode'
     if vim.tbl_isempty(M.get_highlight(hl_name)) then
       local fallback_hl = fallback_hl_from_mode(mode)
-      api.nvim_set_hl(0, hl_name, { link = fallback_hl })
+
+      if mode == 'Normal' or mode == 'TerminalNormal' then
+        -- We can't directly link the `(Terminal)NormalMode` highlight to
+        -- `CursorLineNr` since it will mutate, so we copy it instead
+        local cursor_line_nr = M.get_highlight('CursorLineNr')
+        api.nvim_set_hl(0, hl_name, cursor_line_nr)
+      else
+        api.nvim_set_hl(0, hl_name, { link = fallback_hl })
+      end
     end
   end
 end
@@ -76,7 +93,7 @@ local function mode_name_from_mode(mode)
     ['t']  = 'Terminal',
     ['nt'] = 'TerminalNormal',
   }
-  return mode_names[mode] or 'normal'
+  return mode_names[mode] or 'Normal'
 end
 
 --- Set the foreground and background color of 'CursorLineNr'. Accepts any
