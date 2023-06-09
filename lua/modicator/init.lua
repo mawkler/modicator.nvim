@@ -37,12 +37,14 @@ end
 
 local function fallback_hl_from_mode(mode)
   local hls = {
-    ['Normal']  = 'CursorLineNr',
-    ['Insert']  = 'Question',
-    ['Visual']  = 'Type',
-    ['Select']  = 'Keyword',
-    ['Replace'] = 'Title',
-    ['Command'] = 'Constant',
+    Normal = 'CursorLineNr',
+    Insert = 'Question',
+    Visual = 'Type',
+    Select = 'Keyword',
+    Replace = 'Title',
+    Command = 'Constant',
+    Terminal = 'Question',
+    TerminalNormal = 'CursorLineNr',
   }
   return hls[mode] or hls.normal
 end
@@ -71,15 +73,17 @@ local function mode_name_from_mode(mode)
     ['S']  = 'Select',
     ['R']  = 'Replace',
     ['c']  = 'Command',
+    ['t']  = 'Terminal',
+    ['nt'] = 'TerminalNormal',
   }
   return mode_names[mode] or 'normal'
 end
 
 --- Set the foreground and background color of 'CursorLineNr'. Accepts any
 --- highlight definition map that `vim.api.nvim_set_hl()` does.
---- @param hl_group_name string
-M.set_cursor_line_highlight = function(hl_group_name)
-  local hl_group = api.nvim_get_hl(0, { name = hl_group_name })
+--- @param hl_name string
+M.set_cursor_line_highlight = function(hl_name)
+  local hl_group = M.get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 end
