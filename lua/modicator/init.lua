@@ -28,11 +28,11 @@ M.get_highlight_bg = function(hl_name)
   return api.nvim_get_hl(0, { name = hl_name, link = false }).bg
 end
 
---- Gets the background color value of `group`.
+--- Gets the highlight `group`.
 --- @param hl_name string
 --- @return table<string, any>
 M.get_highlight = function(hl_name)
-  return api.nvim_get_hl(0, { name = hl_name , link = false})
+  return api.nvim_get_hl(0, { name = hl_name , link = false })
 end
 
 local function fallback_hl_from_mode(mode)
