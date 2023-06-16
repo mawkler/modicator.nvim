@@ -156,6 +156,8 @@ function M.setup(opts)
 
   set_fallback_highlight_groups()
 
+  vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'NormalMode' })
+
   create_autocmds()
 end
 
