@@ -1,4 +1,4 @@
-*modicator.txt*            For NVIM v0.8.0           Last change: 2023 June 16
+*modicator.txt*            For NVIM v0.8.0           Last change: 2023 June 29
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -85,6 +85,8 @@ Modicator uses the the following highlight groups for each mode, respectively:
     CommandMode
     ReplaceMode
     SelectMode
+    "TerminalMode",
+    "TerminalNormalMode",
 <
 
 For more information on how to create a highlight group, see `:help
