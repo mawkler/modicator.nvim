@@ -71,8 +71,8 @@ VisualMode
 CommandMode
 ReplaceMode
 SelectMode
-"TerminalMode",
-"TerminalNormalMode",
+TerminalMode,
+TerminalNormalMode,
 ```
 
 For more information on how to create a highlight group, see `:help nvim_set_hl`.
