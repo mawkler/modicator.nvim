@@ -36,6 +36,8 @@ end
 --- Set mode highlights based on lualine's mode highlights
 M.use_lualine_mode_highlights = function()
   local mode_section = get_mode_section_name()
+  -- If lualine doesn't have a `mode` section
+  if mode_section == nil then return end
 
   for _, mode in pairs(lualine_modes) do
     local lualine_hl_group = mode_section .. '_' .. mode
