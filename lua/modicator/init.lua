@@ -37,7 +37,7 @@ end
 --- @param hl_name string
 --- @return table<string, any>
 M.get_highlight = function(hl_name)
-  return api.nvim_get_hl(0, { name = hl_name , link = false })
+  return api.nvim_get_hl(0, { name = hl_name, link = false })
 end
 
 local function fallback_hl_from_mode(mode)
@@ -90,7 +90,7 @@ local function mode_name_from_mode(mode)
     ['i']  = 'Insert',
     ['v']  = 'Visual',
     ['V']  = 'Visual',
-    [''] = 'Visual',
+    ['']  = 'Visual',
     ['s']  = 'Select',
     ['S']  = 'Select',
     ['R']  = 'Replace',
@@ -119,11 +119,11 @@ local function create_autocmds()
 
       M.set_cursor_line_highlight(mode_name .. 'Mode')
     end,
-    group = augroup
+    group = augroup,
   })
   api.nvim_create_autocmd('Colorscheme', {
     callback = set_fallback_highlight_groups,
-    group = augroup
+    group = augroup,
   })
 end
 
@@ -143,8 +143,8 @@ end
 local function check_deprecated_config(opts)
   if opts.highlights and opts.highlights.modes then
     local message = 'modicator.nvim: configuration of highlights has changed '
-    .. 'to highlight groups rather than using `highlights.modes`. Check '
-    .. '`:help modicator-configuration` to see the new configuration API.'
+        .. 'to highlight groups rather than using `highlights.modes`. Check '
+        .. '`:help modicator-configuration` to see the new configuration API.'
     vim.notify(message, vim.log.levels.WARN)
   end
 end
