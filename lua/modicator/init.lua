@@ -10,6 +10,11 @@ local options = {
       italic = false,
     },
   },
+  integration = {
+    lualine = {
+      enabled = true,
+    },
+  },
 }
 
 --- Gets the foreground color value of `group`.
@@ -106,7 +111,7 @@ M.set_cursor_line_highlight = function(hl_name)
 end
 
 local function create_autocmds()
-  api.nvim_create_augroup('Modicator', {})
+  local augroup = api.nvim_create_augroup('Modicator', {})
   api.nvim_create_autocmd('ModeChanged', {
     callback = function()
       local mode = api.nvim_get_mode().mode
@@ -114,11 +119,11 @@ local function create_autocmds()
 
       M.set_cursor_line_highlight(mode_name .. 'Mode')
     end,
-    group = 'Modicator'
+    group = augroup
   })
   api.nvim_create_autocmd('Colorscheme', {
     callback = set_fallback_highlight_groups,
-    group = 'Modicator'
+    group = augroup
   })
 end
 
@@ -126,7 +131,7 @@ local function check_option(option)
   if not vim.o[option] then
     local message = string.format(
       'modicator.nvim requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
-        .. '= true` to your init.lua',
+      .. '= true` to your init.lua',
       option,
       option,
       option
@@ -138,10 +143,15 @@ end
 local function check_deprecated_config(opts)
   if opts.highlights and opts.highlights.modes then
     local message = 'modicator.nvim: configuration of highlights has changed '
-      .. 'to highlight groups rather than using `highlights.modes`. Check '
-      .. '`:help modicator-configuration` to see the new configuration API.'
+    .. 'to highlight groups rather than using `highlights.modes`. Check '
+    .. '`:help modicator-configuration` to see the new configuration API.'
     vim.notify(message, vim.log.levels.WARN)
   end
+end
+
+local function lualine_is_loaded()
+  local ok, _ = pcall(require, 'lualine')
+  return ok
 end
 
 function M.setup(opts)
@@ -154,7 +164,11 @@ function M.setup(opts)
     check_deprecated_config(options)
   end
 
-  set_fallback_highlight_groups()
+  if lualine_is_loaded() and options.integration.lualine.enabled then
+    require('integration.lualine').use_lualine_mode_highlights()
+  else
+    set_fallback_highlight_groups()
+  end
 
   vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'NormalMode' })
 

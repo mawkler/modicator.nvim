@@ -1,10 +1,12 @@
 # Modicator.nvim 💡
 
-_Cursor line number mode indicator._
+_Cursor line number **mod**e ind**icator**._
 
-A small Neovim plugin that changes the foreground color of the `CursorLineNr` highlight based on the current Vim mode.
+A small Neovim plugin that changes the color of your cursor's line number based on the current Vim mode.
 
-![modicator](https://user-images.githubusercontent.com/15816726/215295831-299dc732-85ae-4668-9e7b-e88cd499f18a.gif)
+Modicator has [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) support [out of the box](#lualine-integration).
+
+![Modicator in use](https://user-images.githubusercontent.com/15816726/215295831-299dc732-85ae-4668-9e7b-e88cd499f18a.gif)
 
 ## Setup
 
@@ -12,7 +14,7 @@ A small Neovim plugin that changes the foreground color of the `CursorLineNr` hi
 require('modicator').setup()
 ```
 
-Note that modicator requires you to have `termguicolors`, `cursorline`, `number` set. In Lua this is done by adding
+Note that modicator requires you to have `termguicolors`, `cursorline`, `number` set. In Lua this is done by adding the following somewhere in your Neovim configuration:
 
 ```lua
 vim.o.termguicolors = true
@@ -20,14 +22,12 @@ vim.o.cursorline = true
 vim.o.number = true
 ```
 
-somewhere in your Neovim configuration.
-
 Modicator sets the Normal mode highlight foreground based on the default foreground color of `CursorLineNr` so if you're using a colorscheme make sure that it gets loaded before this plugin.
 
 With [lazy.nvim](https://github.com/folke/lazy.nvim/):
 
 ```lua
-return {
+{
   'mawkler/modicator.nvim',
   dependencies = 'mawkler/onedark.nvim', -- Add your colorscheme plugin here
   init = function()
@@ -36,9 +36,7 @@ return {
     vim.o.number = true
     vim.o.termguicolors = true
   end,
-  config = function()
-    require('modicator').setup()
-  end,
+  opts = {}
 }
 ```
 
@@ -62,7 +60,7 @@ use {
 
 ## Configuration
 
-Modicator uses the the following highlight groups for each mode, respectively:
+Modicator uses the following highlight groups for each mode, respectively:
 
 ```txt
 NormalMode
@@ -71,13 +69,13 @@ VisualMode
 CommandMode
 ReplaceMode
 SelectMode
-TerminalMode,
-TerminalNormalMode,
+TerminalMode
+TerminalNormalMode
 ```
 
 For more information on how to create a highlight group, see `:help nvim_set_hl`.
 
-**Default configuration:**
+### Default configuration:
 
 ```lua
 require('modicator').setup({
@@ -87,8 +85,19 @@ require('modicator').setup({
     -- Default options for bold/italic
     defaults = {
       bold = false,
-      italic = false
+      italic = false,
+    },
+  },
+  integration = {
+    lualine = {
+      enabled = true,
     },
   },
 })
 ```
+
+## Lualine integration
+
+Modicator has built-in support [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim), meaning that if it detects lualine.nvim in your setup it will use the same colors for each mode as lualine.nvim uses. To disable this feature, you can set `integration.lualine = false` in your [modicator configuration](#default-configuration) .
+
+Note that Modicator will only create a highlight group from a lualine.nvim mode highlight if that highlight group doesn't already exist.
