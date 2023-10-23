@@ -17,22 +17,6 @@ local options = {
   },
 }
 
---- Gets the foreground color value of `group`.
---- @deprecated
---- @param hl_name string
---- @return string
-M.get_highlight_fg = function(hl_name)
-  return api.nvim_get_hl(0, { name = hl_name, link = false }).fg
-end
-
---- Gets the background color value of `group`.
---- @deprecated
---- @param hl_name string
---- @return string
-M.get_highlight_bg = function(hl_name)
-  return api.nvim_get_hl(0, { name = hl_name, link = false }).bg
-end
-
 --- Gets the highlight `group`.
 --- @param hl_name string
 --- @return table<string, any>
