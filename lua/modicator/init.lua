@@ -24,6 +24,11 @@ M.get_highlight = function(hl_name)
   return api.nvim_get_hl(0, { name = hl_name, link = false })
 end
 
+local function lualine_is_loaded()
+  local ok, _ = pcall(require, 'lualine')
+  return ok
+end
+
 local function fallback_hl_from_mode(mode)
   local hls = {
     Normal = 'CursorLineNr',
@@ -68,6 +73,14 @@ local function set_fallback_highlight_groups()
   end
 end
 
+local function set_highlight_groups()
+  if lualine_is_loaded() and options.integration.lualine.enabled then
+    require('integration.lualine').use_lualine_mode_highlights()
+  else
+    set_fallback_highlight_groups()
+  end
+end
+
 local function mode_name_from_mode(mode)
   local mode_names = {
     ['n']  = 'Normal',
@@ -106,7 +119,7 @@ local function create_autocmds()
     group = augroup,
   })
   api.nvim_create_autocmd('Colorscheme', {
-    callback = set_fallback_highlight_groups,
+    callback = set_highlight_groups,
     group = augroup,
   })
 end
@@ -133,11 +146,6 @@ local function check_deprecated_config(opts)
   end
 end
 
-local function lualine_is_loaded()
-  local ok, _ = pcall(require, 'lualine')
-  return ok
-end
-
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
 
@@ -148,11 +156,7 @@ function M.setup(opts)
     check_deprecated_config(options)
   end
 
-  if lualine_is_loaded() and options.integration.lualine.enabled then
-    require('integration.lualine').use_lualine_mode_highlights()
-  else
-    set_fallback_highlight_groups()
-  end
+  set_highlight_groups()
 
   vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'NormalMode' })
 
