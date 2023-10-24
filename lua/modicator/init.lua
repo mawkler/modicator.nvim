@@ -24,6 +24,37 @@ M.get_highlight = function(hl_name)
   return api.nvim_get_hl(0, { name = hl_name, link = false })
 end
 
+local function check_option(option)
+  if not vim.o[option] then
+    local message = string.format(
+      'modicator.nvim requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
+      .. '= true` to your init.lua',
+      option,
+      option,
+      option
+    )
+    vim.notify(message, vim.log.levels.WARN)
+  end
+end
+
+local function check_deprecated_config(opts)
+  if opts.highlights and opts.highlights.modes then
+    local message = 'modicator.nvim: configuration of highlights has changed '
+        .. 'to highlight groups rather than using `highlights.modes`. Check '
+        .. '`:help modicator-configuration` to see the new configuration API.'
+    vim.notify(message, vim.log.levels.WARN)
+  end
+end
+
+local function show_warnings()
+  if options.show_warnings then
+    for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
+      check_option(opt)
+    end
+    check_deprecated_config(options)
+  end
+end
+
 local function lualine_is_loaded()
   local ok, _ = pcall(require, 'lualine')
   return ok
@@ -116,8 +147,12 @@ end
 
 local function create_autocmds()
   local augroup = api.nvim_create_augroup('Modicator', {})
+  -- NOTE: VimEnter loads after user's configuration is loaded
   api.nvim_create_autocmd('VimEnter', {
-    callback = update_mode,
+    callback = function()
+      show_warnings()
+      update_mode()
+    end,
     group = augroup,
   })
   api.nvim_create_autocmd('ModeChanged', {
@@ -130,37 +165,8 @@ local function create_autocmds()
   })
 end
 
-local function check_option(option)
-  if not vim.o[option] then
-    local message = string.format(
-      'modicator.nvim requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
-      .. '= true` to your init.lua',
-      option,
-      option,
-      option
-    )
-    vim.notify(message, vim.log.levels.WARN)
-  end
-end
-
-local function check_deprecated_config(opts)
-  if opts.highlights and opts.highlights.modes then
-    local message = 'modicator.nvim: configuration of highlights has changed '
-        .. 'to highlight groups rather than using `highlights.modes`. Check '
-        .. '`:help modicator-configuration` to see the new configuration API.'
-    vim.notify(message, vim.log.levels.WARN)
-  end
-end
-
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
-
-  if options.show_warnings then
-    for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
-      check_option(opt)
-    end
-    check_deprecated_config(options)
-  end
 
   set_highlight_groups()
 
