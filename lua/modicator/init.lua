@@ -107,15 +107,21 @@ M.set_cursor_line_highlight = function(hl_name)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 end
 
+local function update_mode()
+  local mode = api.nvim_get_mode().mode
+  local mode_name = mode_name_from_mode(mode)
+
+  M.set_cursor_line_highlight(mode_name .. 'Mode')
+end
+
 local function create_autocmds()
   local augroup = api.nvim_create_augroup('Modicator', {})
+  api.nvim_create_autocmd('VimEnter', {
+    callback = update_mode,
+    group = augroup,
+  })
   api.nvim_create_autocmd('ModeChanged', {
-    callback = function()
-      local mode = api.nvim_get_mode().mode
-      local mode_name = mode_name_from_mode(mode)
-
-      M.set_cursor_line_highlight(mode_name .. 'Mode')
-    end,
+    callback = update_mode,
     group = augroup,
   })
   api.nvim_create_autocmd('Colorscheme', {
