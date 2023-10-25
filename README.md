@@ -98,6 +98,24 @@ require('modicator').setup({
 
 ## Lualine integration
 
-Modicator has built-in support [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim), meaning that if it detects lualine.nvim in your setup it will use the same colors for each mode as lualine.nvim uses. To disable this feature, you can set `integration.lualine.enabled = false` in your [modicator configuration](#default-configuration) .
+Modicator has built-in support [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim), meaning that if it detects lualine.nvim in your setup it will use the same colors for each mode as lualine.nvim uses. To disable this feature, you can set `integration.lualine.enabled = false` in your [modicator configuration](#default-configuration).
 
 Note that Modicator will only create a highlight group from a lualine.nvim mode highlight if that highlight group doesn't already exist.
+
+## Issues with other plugins
+
+### marks.nvim
+
+By default, [marks.nvim](https://github.com/chentoast/marks.nvim) highlights number lines with marks using `CursorLineNr`, which makes all line numbers recolored by Modicator every time mode is changed.
+
+To fix this issue, either set `MarkSignNumHL` to something else, or remove the highlight group completely by putting the following snippet anywhere in your configuration:
+
+```lua
+local marks_fix_group = vim.api.nvim_create_augroup("marks-fix-hl", {})
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+  group = marks_fix_group,
+  callback = function()
+    vim.api.nvim_set_hl(0, "MarkSignNumHL", {})
+  end,
+})
+```
