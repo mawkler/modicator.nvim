@@ -11,10 +11,27 @@ local lualine_modes = {
   'terminal',
 }
 
+--- @param section table
+--- @return table?
+local function get_mode_table(section)
+  local mode_sections = vim.tbl_filter(function(component)
+    return component[1] == 'mode'
+  end, section)
+  -- If there are multiple 'mode' sections, use the first one
+  return mode_sections[1]
+end
+
+--- @return table?
 local function get_mode_section_name()
   local sections = lualine.get_config().sections
-  for section, values in pairs(sections) do
-    if vim.tbl_contains(values, 'mode') then
+  for section, components in pairs(sections) do
+    -- Look for 'mode' component as a string
+    if vim.tbl_contains(components, 'mode') then
+      return section
+    end
+
+    -- Look for 'mode' component as a table
+    if get_mode_table(components) ~= nil then
       return section
     end
   end
