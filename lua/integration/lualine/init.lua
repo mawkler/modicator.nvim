@@ -15,7 +15,7 @@ local lualine_modes = {
 --- @return table?
 local function get_mode_table(section)
   local mode_sections = vim.tbl_filter(function(component)
-    return component[1] == 'mode'
+    return component and component[1] == 'mode'
   end, section)
   -- If there are multiple 'mode' sections, use the first one
   return mode_sections[1]
