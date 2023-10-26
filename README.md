@@ -102,6 +102,8 @@ Modicator has built-in support [lualine.nvim](https://github.com/nvim-lualine/lu
 
 Note that Modicator will only create a highlight group from a lualine.nvim mode highlight if that highlight group doesn't already exist.
 
+![modicator.nvim's lualine integration](https://github.com/mawkler/modicator.nvim/assets/15816726/dee0ae61-1435-45cc-98e2-89fd8b46d8a7)
+
 ## Issues with other plugins
 
 ### marks.nvim
