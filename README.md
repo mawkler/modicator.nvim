@@ -91,6 +91,10 @@ require('modicator').setup({
   integration = {
     lualine = {
       enabled = true,
+      -- Name of lualine section to use (if `nil`, gets detected automatically)
+      mode_section = nil,
+      -- Whether to use lualine's mode highlight's foreground or background
+      highlight = 'bg',
     },
   },
 })
@@ -101,6 +105,8 @@ require('modicator').setup({
 Modicator has built-in support [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim), meaning that if it detects lualine.nvim in your setup it will use the same colors for each mode as lualine.nvim uses. To disable this feature, you can set `integration.lualine.enabled = false` in your [modicator configuration](#default-configuration).
 
 Note that Modicator will only create a highlight group from a lualine.nvim mode highlight if that highlight group doesn't already exist.
+
+Modicator tries to find your lualine mode section automatically. However, you can specify the section to use manually in `integration.lualine.mode_section`, and whether to use the section highlight's `bg` or `fg` with `integration.lualine.highlight`.
 
 ![modicator.nvim's lualine integration](https://github.com/mawkler/modicator.nvim/assets/15816726/dee0ae61-1435-45cc-98e2-89fd8b46d8a7)
 
@@ -113,11 +119,11 @@ By default, [marks.nvim](https://github.com/chentoast/marks.nvim) highlights num
 To fix this issue, either set `MarkSignNumHL` to something else, or remove the highlight group completely by putting the following snippet anywhere in your configuration:
 
 ```lua
-local marks_fix_group = vim.api.nvim_create_augroup("marks-fix-hl", {})
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
+local marks_fix_group = vim.api.nvim_create_augroup('marks-fix-hl', {})
+vim.api.nvim_create_autocmd({ 'VimEnter' }, {
   group = marks_fix_group,
   callback = function()
-    vim.api.nvim_set_hl(0, "MarkSignNumHL", {})
+    vim.api.nvim_set_hl(0, 'MarkSignNumHL', {})
   end,
 })
 ```
