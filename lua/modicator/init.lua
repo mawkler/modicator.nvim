@@ -154,6 +154,9 @@ M.set_cursor_line_highlight = function(hl_name)
   local hl_group = M.get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
+
+  -- Workaround for https://github.com/neovim/neovim/issues/25851
+  vim.cmd.redraw()
 end
 
 local function update_mode()
