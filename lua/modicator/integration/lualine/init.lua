@@ -38,6 +38,21 @@ local function get_mode_section_name()
   end
 end
 
+--- @param mode_section string?
+--- @return LualineSectionLetter?
+local function letter_from_mode_section(mode_section)
+  if not mode_section then return end
+
+  local section_name_length = #'lualine_' + 1
+  return string.sub(mode_section, section_name_length, section_name_length)
+end
+
+--- @return LualineSectionLetter?
+local function get_mode_section_letter()
+  local mode_section_name = get_mode_section_name()
+  return letter_from_mode_section(mode_section_name)
+end
+
 local function highlight_exists(hl_group)
   local hl = vim.api.nvim_get_hl(0, { name = hl_group })
   return not vim.tbl_isempty(hl)
@@ -45,11 +60,6 @@ end
 
 local function uppercase_first_letter(str)
   return str:gsub('^%l', string.upper)
-end
-
-local function letter_from_mode_section(mode_section)
-  local section_name_length = #"lualine_" + 1
-  return string.sub(mode_section, section_name_length, section_name_length)
 end
 
 --- @return table?
@@ -88,9 +98,9 @@ local function set_highlight_from_lualine(mode, mode_section_letter)
 end
 
 --- Set mode highlights based on lualine's mode highlights
---- @param mode_section string?
+--- @param mode_section LualineSectionLetter?
 M.use_lualine_mode_highlights = function(mode_section)
-  mode_section = mode_section or get_mode_section_name()
+  mode_section = mode_section or get_mode_section_letter()
   -- If lualine doesn't have a `mode` section and none was passed in
   if mode_section == nil then
     local message = "'integration.lualine.enabled' is true, but no lualine "
@@ -100,10 +110,8 @@ M.use_lualine_mode_highlights = function(mode_section)
     return
   end
 
-  local mode_section_letter = letter_from_mode_section(mode_section)
-
   for _, mode in pairs(get_mode_names()) do
-    set_highlight_from_lualine(mode, mode_section_letter)
+    set_highlight_from_lualine(mode, mode_section)
   end
 end
 

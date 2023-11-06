@@ -4,8 +4,8 @@ local M = {}
 
 --- @class ModicatorLualineIntegration
 --- @field enabled? boolean
---- @field mode_section? 'lualine_a' | 'lualine_b' | 'lualine_c' | 'lualine_x' | 'lualine_y' | 'lualine_z' Detected automatically if not set
---- @field highlight? 'bg' | 'fg' -- Whether to use the highlight's foreground or background
+--- @field mode_section? LualineSectionLetter If `nil`, gets detected automatically. See `:help lualine-usage-and-customization`
+--- @field highlight? 'bg' | 'fg' Whether to use the highlight's foreground or background
 
 --- @class ModicatorOptions
 --- @field show_warnings? boolean Show warning on VimEnter if any required option is missing
