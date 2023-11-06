@@ -3,14 +3,12 @@ local modicator = require('modicator')
 
 local M = {}
 
-local lualine_modes = {
-  'normal',
-  'visual',
-  'replace',
-  'insert',
-  'command',
-  'terminal',
-}
+--- @return table<string>
+local function get_mode_names()
+  return vim.tbl_map(function(mode)
+    return vim.fn.tolower(mode)
+  end, modicator.modes)
+end
 
 --- @param section table
 --- @return table?
@@ -47,24 +45,54 @@ local function uppercase_first_letter(str)
   return str:gsub('^%l', string.upper)
 end
 
+local function letter_from_mode_section(mode_section)
+  local section_name_length = #"lualine_" + 1
+  return string.sub(mode_section, section_name_length, section_name_length)
+end
+
+--- @return table?
+local function get_lualine_theme()
+  local loader = require('lualine.utils.loader')
+  local ok, theme = pcall(loader.load_theme, vim.g.colors_name)
+  if ok and theme then
+    return theme
+  end
+end
+
+--- @param mode string
+--- @param mode_section 'a' | 'b' | 'c' | 'x' | 'y' | 'z'
+--- @return table?
+local function get_lualine_mode_hl(mode, mode_section)
+  local theme = get_lualine_theme()
+  return theme and theme[mode] and theme[mode][mode_section]
+end
+
 --- Set mode highlights based on lualine's mode highlights
 --- @param mode_section string?
 M.use_lualine_mode_highlights = function(mode_section)
   mode_section = mode_section or get_mode_section_name()
   -- If lualine doesn't have a `mode` section and none was passed in
-  if mode_section == nil then return end
+  if mode_section == nil then
+    local message = "'integration.lualine.enabled' is true, but no lualine "
+        .. "mode section was found. Please set it manually in "
+        .. "'integration.lualine.mode_section'"
+    require('modicator.utils').warn(message)
+    return
+  end
 
-  for _, mode in pairs(lualine_modes) do
+  local mode_section_letter = letter_from_mode_section(mode_section)
+
+  for _, mode in pairs(get_mode_names()) do
     local mode_hl_group = uppercase_first_letter(mode) .. 'Mode'
+    local hl = get_lualine_mode_hl(mode, mode_section_letter)
 
-    local lualine_hl_group = mode_section .. '_' .. mode
-    local lualine_mode_hl = modicator.get_highlight(lualine_hl_group)
+    if not hl then
+      -- Fallback if lualine highlight for `mode` doesn't exist
+      hl = get_lualine_mode_hl('normal', mode_section_letter)
+    end
 
-    local hl_level = modicator.get_options().integration.lualine.highlight
-    local hl = lualine_mode_hl[hl_level]
-
-    if not highlight_exists(mode_hl_group) then
-      vim.api.nvim_set_hl(0, mode_hl_group, { fg = hl })
+    if hl and not highlight_exists(mode_hl_group) then
+      vim.api.nvim_set_hl(0, mode_hl_group, { fg = hl.fg })
     end
   end
 end

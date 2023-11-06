@@ -44,22 +44,22 @@ end
 local function check_option(option)
   if not vim.o[option] then
     local message = string.format(
-      'modicator.nvim requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
+      'modicator requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
       .. '= true` to your init.lua',
       option,
       option,
       option
     )
-    vim.notify(message, vim.log.levels.WARN)
+    require('modicator.utils').warn(message)
   end
 end
 
 local function check_deprecated_config(opts)
   if opts.highlights and opts.highlights.modes then
-    local message = 'modicator.nvim: configuration of highlights has changed '
-        .. 'to highlight groups rather than using `highlights.modes`. Check '
-        .. '`:help modicator-configuration` to see the new configuration API.'
-    vim.notify(message, vim.log.levels.WARN)
+    local message = 'configuration of highlights has changed to highlight '
+        .. 'groups rather than using `highlights.modes`. Check `:help '
+        .. 'modicator-configuration` to see the new configuration API.'
+    require('modicator.utils').warn(message)
   end
 end
 
@@ -77,6 +77,30 @@ local function lualine_is_loaded()
   return ok
 end
 
+local function mode_name_from_mode(mode)
+  local mode_names = {
+    ['n']  = 'Normal',
+    ['i']  = 'Insert',
+    ['v']  = 'Visual',
+    ['V']  = 'Visual',
+    ['']  = 'Visual',
+    ['s']  = 'Select',
+    ['S']  = 'Select',
+    ['R']  = 'Replace',
+    ['c']  = 'Command',
+    ['t']  = 'Terminal',
+    ['nt'] = 'TerminalNormal',
+  }
+  return mode_names[mode] or 'Normal'
+end
+
+local function update_mode()
+  local mode = api.nvim_get_mode().mode
+  local mode_name = mode_name_from_mode(mode)
+
+  M.set_cursor_line_highlight(mode_name .. 'Mode')
+end
+
 local function fallback_hl_from_mode(mode)
   local hls = {
     Normal = 'CursorLineNr',
@@ -91,20 +115,20 @@ local function fallback_hl_from_mode(mode)
   return hls[mode] or hls.normal
 end
 
+M.modes = {
+  'Normal',
+  'Insert',
+  'Visual',
+  'Command',
+  'Replace',
+  'Select',
+  'Terminal',
+  'TerminalNormal',
+}
+
 -- Link any missing mode highlight to its fallback highlight
 local function set_fallback_highlight_groups()
-  local modes = {
-    'Normal',
-    'Insert',
-    'Visual',
-    'Command',
-    'Replace',
-    'Select',
-    'Terminal',
-    'TerminalNormal',
-  }
-
-  for _, mode in pairs(modes) do
+  for _, mode in pairs(M.modes) do
     local hl_name = mode .. 'Mode'
     if vim.tbl_isempty(M.get_highlight(hl_name)) then
       local fallback_hl = fallback_hl_from_mode(mode)
@@ -128,23 +152,8 @@ local function set_highlight_groups()
   else
     set_fallback_highlight_groups()
   end
-end
 
-local function mode_name_from_mode(mode)
-  local mode_names = {
-    ['n']  = 'Normal',
-    ['i']  = 'Insert',
-    ['v']  = 'Visual',
-    ['V']  = 'Visual',
-    ['']  = 'Visual',
-    ['s']  = 'Select',
-    ['S']  = 'Select',
-    ['R']  = 'Replace',
-    ['c']  = 'Command',
-    ['t']  = 'Terminal',
-    ['nt'] = 'TerminalNormal',
-  }
-  return mode_names[mode] or 'Normal'
+  update_mode()
 end
 
 --- Set the foreground and background color of 'CursorLineNr'. Accepts any
@@ -157,13 +166,6 @@ M.set_cursor_line_highlight = function(hl_name)
 
   -- Workaround for https://github.com/neovim/neovim/issues/25851
   vim.cmd.redraw()
-end
-
-local function update_mode()
-  local mode = api.nvim_get_mode().mode
-  local mode_name = mode_name_from_mode(mode)
-
-  M.set_cursor_line_highlight(mode_name .. 'Mode')
 end
 
 local function create_autocmds()
