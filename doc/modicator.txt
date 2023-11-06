@@ -111,7 +111,7 @@ DEFAULT CONFIGURATION: ~
       integration = {
         lualine = {
           enabled = true,
-          -- Name of lualine section to use (if `nil`, gets detected automatically)
+          -- Letter of lualine section to use (if `nil`, gets detected automatically)
           mode_section = nil,
           -- Whether to use lualine's mode highlight's foreground or background
           highlight = 'bg',
