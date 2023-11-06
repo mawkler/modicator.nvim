@@ -3,6 +3,8 @@ local modicator = require('modicator')
 
 local M = {}
 
+--- @alias LualineSectionLetter 'a' | 'b' | 'c' | 'x' | 'y' | 'z'
+
 --- @return table<string>
 local function get_mode_names()
   return vim.tbl_map(function(mode)
@@ -60,11 +62,29 @@ local function get_lualine_theme()
 end
 
 --- @param mode string
---- @param mode_section 'a' | 'b' | 'c' | 'x' | 'y' | 'z'
+--- @param mode_section LualineSectionLetter
 --- @return table?
 local function get_lualine_mode_hl(mode, mode_section)
   local theme = get_lualine_theme()
   return theme and theme[mode] and theme[mode][mode_section]
+end
+
+--- @param mode string
+--- @param mode_section_letter LualineSectionLetter
+local function set_highlight_from_lualine(mode, mode_section_letter)
+  local mode_hl_group = uppercase_first_letter(mode) .. 'Mode'
+  local hl = get_lualine_mode_hl(mode, mode_section_letter)
+
+  if not hl then
+    -- Fallback if lualine highlight for `mode` doesn't exist
+    hl = get_lualine_mode_hl('normal', mode_section_letter)
+  end
+
+  if hl and not highlight_exists(mode_hl_group) then
+    local options = modicator.get_options()
+    local highlight_level = options.integration.lualine.highlight
+    vim.api.nvim_set_hl(0, mode_hl_group, { fg = hl[highlight_level] })
+  end
 end
 
 --- Set mode highlights based on lualine's mode highlights
@@ -83,19 +103,7 @@ M.use_lualine_mode_highlights = function(mode_section)
   local mode_section_letter = letter_from_mode_section(mode_section)
 
   for _, mode in pairs(get_mode_names()) do
-    local mode_hl_group = uppercase_first_letter(mode) .. 'Mode'
-    local hl = get_lualine_mode_hl(mode, mode_section_letter)
-
-    if not hl then
-      -- Fallback if lualine highlight for `mode` doesn't exist
-      hl = get_lualine_mode_hl('normal', mode_section_letter)
-    end
-
-    if hl and not highlight_exists(mode_hl_group) then
-      local options = modicator.get_options()
-      local highlight_level = options.integration.lualine.highlight
-      vim.api.nvim_set_hl(0, mode_hl_group, { fg = hl[highlight_level] })
-    end
+    set_highlight_from_lualine(mode, mode_section_letter)
   end
 end
 
