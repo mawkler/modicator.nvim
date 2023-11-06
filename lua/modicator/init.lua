@@ -148,7 +148,7 @@ end
 local function set_highlight_groups()
   if lualine_is_loaded() and options.integration.lualine.enabled then
     local mode_section = options.integration.lualine.mode_section
-    require('integration.lualine').use_lualine_mode_highlights(mode_section)
+    require('modicator.integration.lualine').use_lualine_mode_highlights(mode_section)
   else
     set_fallback_highlight_groups()
   end
