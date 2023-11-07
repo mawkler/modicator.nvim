@@ -10,4 +10,19 @@ M.warn = function(message)
   end
 end
 
+--- @param hl_group string
+--- @return boolean
+M.highlight_exists = function(hl_group)
+  local hl = vim.api.nvim_get_hl(0, { name = hl_group })
+  return not vim.tbl_isempty(hl)
+end
+
+--- @return table<string>
+M.get_highlights = function()
+  local modes = require('modicator').modes
+  return vim.tbl_map(function(mode)
+    return mode .. 'Mode'
+  end, modes)
+end
+
 return M

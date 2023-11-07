@@ -53,11 +53,6 @@ local function get_mode_section_letter()
   return letter_from_mode_section(mode_section_name)
 end
 
-local function highlight_exists(hl_group)
-  local hl = vim.api.nvim_get_hl(0, { name = hl_group })
-  return not vim.tbl_isempty(hl)
-end
-
 local function uppercase_first_letter(str)
   return str:gsub('^%l', string.upper)
 end
@@ -90,6 +85,7 @@ local function set_highlight_from_lualine(mode, mode_section_letter)
     hl = get_lualine_mode_hl('normal', mode_section_letter)
   end
 
+  local highlight_exists = require('modicator.utils').highlight_exists
   if hl and not highlight_exists(mode_hl_group) then
     local options = modicator.get_options()
     local highlight_level = options.integration.lualine.highlight
