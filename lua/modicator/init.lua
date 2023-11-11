@@ -94,11 +94,16 @@ local function mode_name_from_mode(mode)
   return mode_names[mode] or 'Normal'
 end
 
+--- @param mode string
+M.hl_name_from_mode = function(mode)
+  local mode_name = mode_name_from_mode(mode)
+  return mode_name .. 'Mode'
+end
+
 local function update_mode()
   local mode = api.nvim_get_mode().mode
-  local mode_name = mode_name_from_mode(mode)
-
-  M.set_cursor_line_highlight(mode_name .. 'Mode')
+  local hl_name = M.hl_name_from_mode(mode)
+  M.set_cursor_line_highlight(hl_name)
 end
 
 local function fallback_hl_from_mode(mode)
