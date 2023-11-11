@@ -32,6 +32,7 @@ local function sleep(ms)
   coroutine.yield()
 end
 
+--- @return table
 local function get_current_hl()
   return modicator.get_highlight('CursorLineNr')
 end
@@ -46,6 +47,24 @@ local default_mode_fg_hls = {
   TerminalNormalMode = 16776960,
   VisualMode         = 6356832,
 }
+
+local function test_mode_switching(from_mode, to_mode, key_press)
+  feedkeys('<Esc>')
+  sleep()
+
+  assert.are.equal(from_mode, vim.fn.mode())
+
+  local current_normal_hl_fg = get_current_hl().fg
+  local expected_normal_hl_fg = default_mode_fg_hls[hl_name_from_mode(from_mode)]
+  assert.are.equal(current_normal_hl_fg, expected_normal_hl_fg)
+
+  feedkeys(key_press)
+  sleep()
+
+  local current_visual_hl_fg = get_current_hl().fg
+  local expected_visual_hl_fg = default_mode_fg_hls[hl_name_from_mode(to_mode)]
+  assert.are.equal(current_visual_hl_fg, expected_visual_hl_fg)
+end
 
 describe('creates highlights', function()
   it('has no modicator highlights before setup', function()
@@ -70,24 +89,34 @@ describe('creates highlights', function()
 
     assert.are.same(default_mode_fg_hls, mode_hl_fgs)
   end)
+end)
 
-  it('', function()
-    assert.are.equal('n', vim.fn.mode())
+describe('mode switching', function()
+  it('switches to insert mode', function()
+    test_mode_switching('n', 'i', 'i')
+  end)
 
-    local current_normal_hl_fg = get_current_hl().fg
-    local expected_normal_hl_fg = default_mode_fg_hls[hl_name_from_mode('n')]
-    assert.are.equal(current_normal_hl_fg, expected_normal_hl_fg)
+  it('switches to visual mode', function()
+    test_mode_switching('n', 'v', 'v')
+  end)
 
-    feedkeys('v')
-    sleep()
+  it('switches to command-line mode', function()
+    test_mode_switching('n', 'c', ':')
+  end)
 
-    local current_visual_hl_fg = get_current_hl().fg
-    local expected_visual_hl_fg = default_mode_fg_hls[hl_name_from_mode('v')]
-    assert.are.equal(current_visual_hl_fg, expected_visual_hl_fg)
+  it('switches to select mode', function()
+    test_mode_switching('n', 's', 'gh')
+  end)
 
-    sleep()
+  it('switches to replace mode', function()
+    test_mode_switching('n', 'R', 'R')
+  end)
 
-    assert.are.equal('v', vim.fn.mode())
-    assert.are_not.equal('i', vim.fn.mode())
+  it('switches to terminal mode', function()
+    test_mode_switching('n', 'tn', ':terminal<CR>')
+  end)
+
+  it('switches to terminal mode', function()
+    test_mode_switching('n', 't', ':terminal<CR>i')
   end)
 end)
