@@ -127,3 +127,11 @@ vim.api.nvim_create_autocmd({ 'VimEnter' }, {
   end,
 })
 ```
+
+# Development
+
+To run test, run:
+
+```sh
+nvim --headless -c 'PlenaryBustedDirectory tests'
+```
