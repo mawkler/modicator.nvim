@@ -48,7 +48,11 @@ local default_mode_fg_hls = {
   VisualMode         = 6356832,
 }
 
-local function test_mode_switching(from_mode, to_mode, key_press)
+--- @param expected_mode string
+--- @param key_press string
+local function test_mode_switching(expected_mode, key_press)
+  local from_mode = 'n'
+
   feedkeys('<Esc>')
   sleep()
 
@@ -62,7 +66,7 @@ local function test_mode_switching(from_mode, to_mode, key_press)
   sleep()
 
   local current_visual_hl_fg = get_current_hl().fg
-  local expected_visual_hl_fg = default_mode_fg_hls[hl_name_from_mode(to_mode)]
+  local expected_visual_hl_fg = default_mode_fg_hls[hl_name_from_mode(expected_mode)]
   assert.are.equal(current_visual_hl_fg, expected_visual_hl_fg)
 end
 
@@ -93,30 +97,30 @@ end)
 
 describe('mode switching', function()
   it('switches to insert mode', function()
-    test_mode_switching('n', 'i', 'i')
+    test_mode_switching('i', 'i')
   end)
 
   it('switches to visual mode', function()
-    test_mode_switching('n', 'v', 'v')
+    test_mode_switching('v', 'v')
   end)
 
   it('switches to command-line mode', function()
-    test_mode_switching('n', 'c', ':')
+    test_mode_switching('c', ':')
   end)
 
   it('switches to select mode', function()
-    test_mode_switching('n', 's', 'gh')
+    test_mode_switching('s', 'gh')
   end)
 
   it('switches to replace mode', function()
-    test_mode_switching('n', 'R', 'R')
+    test_mode_switching('R', 'R')
   end)
 
   it('switches to terminal mode', function()
-    test_mode_switching('n', 'tn', ':terminal<CR>')
+    test_mode_switching('tn', ':terminal<CR>')
   end)
 
   it('switches to terminal mode', function()
-    test_mode_switching('n', 't', ':terminal<CR>i')
+    test_mode_switching('t', ':terminal<CR>i')
   end)
 end)
