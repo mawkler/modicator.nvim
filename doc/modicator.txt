@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.8.0         Last change: 2023 November 07
+*modicator.txt*          For NVIM v0.8.0         Last change: 2023 November 11
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -8,6 +8,7 @@ Table of Contents                                *modicator-table-of-contents*
   - Configuration                |modicator-modicator.nvim-💡-configuration|
   - Lualine integration    |modicator-modicator.nvim-💡-lualine-integration|
   - Issues with other plugins|modicator-modicator.nvim-💡-issues-with-other-plugins|
+2. Development                                         |modicator-development|
 
 ==============================================================================
 1. Modicator.nvim 💡                         *modicator-modicator.nvim-💡*
@@ -162,8 +163,18 @@ configuration:
     })
 <
 
+
 ==============================================================================
-2. Links                                                     *modicator-links*
+2. Development                                         *modicator-development*
+
+To run test, run:
+
+>sh
+    nvim --headless -c 'PlenaryBustedDirectory tests'
+<
+
+==============================================================================
+3. Links                                                     *modicator-links*
 
 1. *Modicator in use*: https://user-images.githubusercontent.com/15816726/215295831-299dc732-85ae-4668-9e7b-e88cd499f18a.gif
 2. *modicator.nvim’s lualine integration*: https://github.com/mawkler/modicator.nvim/assets/15816726/dee0ae61-1435-45cc-98e2-89fd8b46d8a7
