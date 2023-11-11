@@ -34,13 +34,6 @@ M.get_options = function()
   return options
 end
 
---- Gets the highlight `group`.
---- @param hl_name string
---- @return table<string, any>
-M.get_highlight = function(hl_name)
-  return api.nvim_get_hl(0, { name = hl_name, link = false })
-end
-
 local function check_option(option)
   if not vim.o[option] then
     local message = string.format(
@@ -134,14 +127,16 @@ M.modes = {
 -- Link any missing mode highlight to its fallback highlight
 local function set_fallback_highlight_groups()
   for _, mode in pairs(M.modes) do
+    local utils = require('modicator.utils')
     local hl_name = mode .. 'Mode'
-    if vim.tbl_isempty(M.get_highlight(hl_name)) then
+
+    if vim.tbl_isempty(utils.get_highlight(hl_name)) then
       local fallback_hl = fallback_hl_from_mode(mode)
 
       if mode == 'Normal' or mode == 'TerminalNormal' then
         -- We can't directly link the `(Terminal)NormalMode` highlight to
         -- `CursorLineNr` since it will mutate, so we copy it instead
-        local cursor_line_nr = M.get_highlight('CursorLineNr')
+        local cursor_line_nr = utils.get_highlight('CursorLineNr')
         api.nvim_set_hl(0, hl_name, cursor_line_nr)
       else
         api.nvim_set_hl(0, hl_name, { link = fallback_hl })
@@ -165,7 +160,7 @@ end
 --- highlight definition map that `vim.api.nvim_set_hl()` does.
 --- @param hl_name string
 M.set_cursor_line_highlight = function(hl_name)
-  local hl_group = M.get_highlight(hl_name)
+  local hl_group = require('modicator.utils').get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 

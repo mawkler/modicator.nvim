@@ -25,4 +25,11 @@ M.get_highlights = function()
   end, modes)
 end
 
+--- Gets the highlight `group`.
+--- @param hl_name string
+--- @return table<string, any>
+M.get_highlight = function(hl_name)
+  return vim.api.nvim_get_hl(0, { name = hl_name, link = false })
+end
+
 return M

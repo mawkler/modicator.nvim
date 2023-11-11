@@ -34,7 +34,7 @@ end
 
 --- @return table
 local function get_current_hl()
-  return modicator.get_highlight('CursorLineNr')
+  return utils.get_highlight('CursorLineNr')
 end
 
 local default_mode_fg_hls = {
@@ -88,7 +88,7 @@ describe('creates highlights', function()
   it('sets mode highlights for default colorscheme', function()
     local mode_hl_fgs = {}
     for _, hl_name in pairs(utils.get_highlights()) do
-      mode_hl_fgs[hl_name] = modicator.get_highlight(hl_name).fg
+      mode_hl_fgs[hl_name] = utils.get_highlight(hl_name).fg
     end
 
     assert.are.same(default_mode_fg_hls, mode_hl_fgs)
