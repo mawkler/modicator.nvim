@@ -130,8 +130,8 @@ vim.api.nvim_create_autocmd({ 'VimEnter' }, {
 
 # Development
 
-To run test, run:
+To run test, run the following:
 
 ```sh
-nvim --headless -c 'PlenaryBustedDirectory tests'
+nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/init.lua' }"
 ```
