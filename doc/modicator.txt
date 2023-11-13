@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.8.0         Last change: 2023 November 11
+*modicator.txt*          For NVIM v0.8.0         Last change: 2023 November 13
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -167,10 +167,10 @@ configuration:
 ==============================================================================
 2. Development                                         *modicator-development*
 
-To run test, run:
+To run test, run the following:
 
 >sh
-    nvim --headless -c 'PlenaryBustedDirectory tests'
+    nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/init.lua' }"
 <
 
 ==============================================================================
