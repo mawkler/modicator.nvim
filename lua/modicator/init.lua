@@ -164,8 +164,12 @@ M.set_cursor_line_highlight = function(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 
+  local is_register_executing = vim.fn.reg_executing() ~= ""
+
   -- Workaround for https://github.com/neovim/neovim/issues/25851
-  vim.cmd.redraw()
+  if not vim.o.lazyredraw and not is_register_executing then
+    vim.cmd.redraw()
+  end
 end
 
 local function create_autocmds()
