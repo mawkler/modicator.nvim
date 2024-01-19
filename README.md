@@ -130,8 +130,14 @@ vim.api.nvim_create_autocmd({ 'VimEnter' }, {
 
 # Development
 
-To run test, run the following:
+To run tests, execute the following:
 
 ```sh
-nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/init.lua' }"
+make test
+```
+
+Alternatively, to watch the tests (requires [entr](https://github.com/eradman/entr)):
+
+```sh
+make test-watch
 ```
