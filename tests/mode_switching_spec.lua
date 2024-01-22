@@ -38,14 +38,13 @@ local function get_current_hl()
 end
 
 local default_mode_fg_hls = {
-  CommandMode        = 16752800,
-  InsertMode         = 32768,
-  NormalMode         = 16776960,
-  ReplaceMode        = 16711935,
-  SelectMode         = 16777056,
-  TerminalMode       = 32768,
-  TerminalNormalMode = 16776960,
-  VisualMode         = 6356832,
+  InsertMode  = 9238775,
+  VisualMode  = 11794112,
+  SelectMode  = 16761017,
+  ReplaceMode = 16572564,
+  CommandMode = 10935295,
+  -- NormalMode, TerminalMode and TerminalNormalMode have no fg color in the
+  -- default colorscheme
 }
 
 --- @param expected_mode string

@@ -103,11 +103,11 @@ local function fallback_hl_from_mode(mode)
   local hls = {
     Normal = 'CursorLineNr',
     Insert = 'Question',
-    Visual = 'Type',
-    Select = 'Keyword',
-    Replace = 'Title',
-    Command = 'Constant',
-    Terminal = 'Question',
+    Visual = 'String',
+    Select = 'ErrorMsg',
+    Replace = 'WarningMsg',
+    Command = 'Identifier',
+    Terminal = 'Operator',
     TerminalNormal = 'CursorLineNr',
   }
   return hls[mode] or hls.normal
