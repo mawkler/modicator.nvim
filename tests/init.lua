@@ -1,4 +1,4 @@
-local status, error = pcall(function()
+pcall(function()
   local root = vim.fn.fnamemodify('.repro', ':p')
   for _, name in ipairs { 'config', 'data', 'state', 'cache' } do
     vim.env[('XDG_%s_HOME'):format(name:upper())] = root .. '/' .. name
@@ -11,13 +11,14 @@ local status, error = pcall(function()
   end
   vim.opt.runtimepath:prepend(lazy_path)
 
+  vim.o.showmode = false
   vim.o.termguicolors = true
   vim.o.cursorline = true
   vim.o.number = true
 
   local plugins = {
-    { 'mawkler/modicator.nvim', opts = {} },
     { 'nvim-lua/plenary.nvim' },
+    { 'catppuccin/nvim', name = 'catppuccin', },
   }
 
   require('lazy').setup(plugins, { root = root .. '/plugins' })

@@ -5,18 +5,13 @@ local highlight_exists = utils.highlight_exists
 local get_highlights = utils.get_highlights
 local hl_name_from_mode = modicator.hl_name_from_mode
 
-local function setup_modicator()
-  vim.o.termguicolors = true
-  vim.o.cursorline = true
-  vim.o.number = true
-  require('modicator').setup()
-end
-
 --- @param keys string
 --- @param mode string?
 local function feedkeys(keys, mode)
   if mode == nil then mode = 'n' end
 
+  -- TODO: `feedkeys()` seems to print out the typed keys in plenary's output
+  -- window. Not sure how to fix that.
   return vim.api.nvim_feedkeys(
     vim.api.nvim_replace_termcodes(keys, true, true, true),
     mode,
@@ -69,7 +64,7 @@ local function test_mode_switching(expected_mode, key_press)
   assert.are.equal(current_visual_hl_fg, expected_visual_hl_fg)
 end
 
-describe('creates highlights', function()
+describe('creates default highlights', function()
   it('has no modicator highlights before setup', function()
     for _, highlight in pairs(get_highlights()) do
       assert.is_not_true(highlight_exists(highlight))
@@ -77,7 +72,7 @@ describe('creates highlights', function()
   end)
 
   it('creates highlights on setup', function()
-    setup_modicator()
+    require('modicator').setup()
 
     for _, highlight in pairs(get_highlights()) do
       assert.is_true(highlight_exists(highlight))
