@@ -60,9 +60,14 @@ end
 --- @return table?
 local function get_lualine_theme()
   local loader = require('lualine.utils.loader')
-  local ok, theme = pcall(loader.load_theme, vim.g.colors_name)
-  if ok and theme then
-    return theme
+  local lualine_theme = require('lualine').get_config().options.theme
+  if (type(lualine_theme) == 'table') then
+    return lualine_theme
+  else
+    local ok, theme = pcall(loader.load_theme, lualine_theme)
+    if ok and theme then
+      return theme
+    end
   end
 end
 
