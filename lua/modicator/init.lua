@@ -58,6 +58,9 @@ end
 
 local function show_warnings()
   if options.show_warnings then
+    if not api.nvim_buf_get_option(0, 'modifiable') then
+      return
+    end
     for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
       check_option(opt)
     end
@@ -94,6 +97,10 @@ M.hl_name_from_mode = function(mode)
 end
 
 local function update_mode()
+  if not api.nvim_buf_get_option(0, 'modifiable') then
+    return
+  end
+
   local mode = api.nvim_get_mode().mode
   local hl_name = M.hl_name_from_mode(mode)
   M.set_cursor_line_highlight(hl_name)
