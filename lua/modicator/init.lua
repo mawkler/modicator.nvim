@@ -34,19 +34,27 @@ M.get_options = function()
   return options
 end
 
-local function check_option(option)
-  if not vim.o[option] then
-    local message = string.format(
-      'modicator requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
-      .. '= true` to your init.lua',
-      option,
-      option,
-      option
-    )
-    require('modicator.utils').warn(message)
+--- @return table
+local function get_missing_options(opts)
+  return vim.iter(opts):filter(function(opt) return not vim.o[opt] end)
+end
+
+local function warn_missing_options(opts)
+  for _, opt in pairs(opts) do
+    if not vim.o[opt] then
+      local message = string.format(
+        'Modicator requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
+        .. '= true` to your init.lua',
+        opt,
+        opt,
+        opt
+      )
+      require('modicator.utils').warn(message)
+    end
   end
 end
 
+--- @param opts table
 local function check_deprecated_config(opts)
   if opts.highlights and opts.highlights.modes then
     local message = 'configuration of highlights has changed to highlight '
@@ -58,9 +66,24 @@ end
 
 local function show_warnings()
   if options.show_warnings then
-    for _, opt in pairs({ 'cursorline', 'number', 'termguicolors' }) do
-      check_option(opt)
+    local missing_options = get_missing_options({
+      'cursorline',
+      'number',
+      'termguicolors',
+    }):totable()
+
+    if #missing_options > 0 then
+      warn_missing_options(missing_options)
+
+      local message = 'If you\'ve you have already set '
+          .. 'those options in your config, this warning is likely '
+          .. 'caused by another plugin temporarily modifying those '
+          .. 'options for this buffer. If Modicator works as expected in '
+          .. 'other buffers you can remove the `show_warnings` option '
+          .. 'from your Modicator configuration.'
+      require('modicator.utils').inform(message)
     end
+
     check_deprecated_config(options)
   end
 end

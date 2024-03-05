@@ -10,6 +10,14 @@ M.warn = function(message)
   end
 end
 
+--- @param message string
+M.inform = function(message)
+  if modicator.get_options().show_warnings then
+    local warning = string.format('modicator.nvim: %s', message)
+    vim.notify(warning, vim.log.levels.INFO)
+  end
+end
+
 --- @param hl_group string
 --- @return boolean
 M.highlight_exists = function(hl_group)
