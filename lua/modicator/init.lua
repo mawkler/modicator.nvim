@@ -13,7 +13,7 @@ local M = {}
 --- @field integration? { lualine?: ModicatorLualineIntegration }
 local options = {
   --- @type boolean
-  show_warnings = true,
+  show_warnings = false,
   highlights = {
     defaults = {
       bold = false,

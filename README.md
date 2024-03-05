@@ -36,7 +36,13 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim/):
     vim.o.number = true
     vim.o.termguicolors = true
   end,
-  opts = {}
+  opts = {
+    -- Warn if any required option above is missing. May emit false positives
+    -- if some other plugin modifies them, which in that case you can just
+    -- ignore. Feel free to remove this line after you've gotten Modicator to
+    -- work properly.
+    show_warnings = true,
+  }
 }
 ```
 
@@ -53,7 +59,13 @@ use {
     vim.o.termguicolors = true
   end,
   config = function()
-    require('modicator').setup()
+    require('modicator').setup({
+    -- Warn if any required option above is missing. May emit false positives
+    -- if some other plugin modifies them, which in that case you can just
+    -- ignore. Feel free to remove this line after you've gotten Modicator to
+    -- work properly.
+    show_warnings = true,
+  })
   end
 }
 ```
@@ -79,8 +91,9 @@ For more information on how to create a highlight group, see `:help nvim_set_hl`
 
 ```lua
 require('modicator').setup({
-  -- Show warning if any required option is missing
-  show_warnings = true,
+  -- Warn if any required option is missing. May emit false positives if some
+  -- other plugin modifies them, which in that case you can just ignore
+  show_warnings = false,
   highlights = {
     -- Default options for bold/italic
     defaults = {
