@@ -5,6 +5,7 @@ local M = {}
 --- @class ModicatorLualineIntegration
 --- @field enabled? boolean
 --- @field mode_section? LualineSectionLetter If `nil`, gets detected automatically. See `:help lualine-usage-and-customization`
+--- @field cursor_line_nr_background? boolean If true, CursorLineNr will use the same background with CursorLine
 --- @field highlight? 'bg' | 'fg' Whether to use the highlight's foreground or background
 
 --- @class ModicatorOptions
@@ -14,6 +15,7 @@ local M = {}
 local options = {
   --- @type boolean
   show_warnings = false,
+  cursor_line_nr_background = false,
   highlights = {
     defaults = {
       bold = false,
@@ -185,6 +187,10 @@ end
 M.set_cursor_line_highlight = function(hl_name)
   local hl_group = require('modicator.utils').get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
+  if options.cursor_line_nr_background == true then
+    local cl = require('modicator.utils').get_highlight("CursorLine")
+    hl = vim.tbl_extend('force', cl, hl)
+  end
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 
   local is_register_executing = vim.fn.reg_executing() ~= ""
