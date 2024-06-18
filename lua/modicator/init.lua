@@ -8,12 +8,15 @@ local M = {}
 --- @field cursor_line_nr_background? boolean If true, CursorLineNr will use the same background with CursorLine
 --- @field highlight? 'bg' | 'fg' Whether to use the highlight's foreground or background
 
+--- @class ModicatorHighlightOptions
+--- @field defaults? { bold?: boolean, italic?: boolean } Default highlight options
+--- @field use_cursorline_background? boolean Use `CursorLine`'s background color for `CursorLineNr`'s background
+
 --- @class ModicatorOptions
 --- @field show_warnings? boolean Show warning on VimEnter if any required option is missing
---- @field highlights? { defaults?: { bold?: boolean, italic?: boolean } }
+--- @field highlights? ModicatorHighlightOptions
 --- @field integration? { lualine?: ModicatorLualineIntegration }
 local options = {
-  --- @type boolean
   show_warnings = false,
   cursor_line_nr_background = false,
   highlights = {
@@ -21,6 +24,7 @@ local options = {
       bold = false,
       italic = false,
     },
+    use_cursorline_background = true,
   },
   integration = {
     lualine = {
@@ -188,8 +192,8 @@ M.set_cursor_line_highlight = function(hl_name)
   local hl_group = require('modicator.utils').get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   if options.cursor_line_nr_background == true then
-    local cl = require('modicator.utils').get_highlight("CursorLine")
-    hl = vim.tbl_extend('force', cl, hl)
+    local cl = require('modicator.utils').get_highlight('CursorLine')
+    hl = vim.tbl_extend('keep', { bg = cl.bg }, hl)
   end
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 
