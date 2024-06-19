@@ -1,4 +1,4 @@
-*modicator.txt*           For NVIM v0.8.0           Last change: 2024 March 05
+*modicator.txt*            For NVIM v0.8.0           Last change: 2024 June 19
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -9,6 +9,7 @@ Table of Contents                                *modicator-table-of-contents*
   - Lualine integration    |modicator-modicator.nvim-💡-lualine-integration|
   - Issues with other plugins|modicator-modicator.nvim-💡-issues-with-other-plugins|
 2. Development                                         |modicator-development|
+3. Links                                                     |modicator-links|
 
 ==============================================================================
 1. Modicator.nvim 💡                         *modicator-modicator.nvim-💡*
