@@ -33,4 +33,4 @@ jobs:
         run: |
           nvim --version
           [ ! -d tests ] && exit 0
-          nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests/ { minimal_init = 'tests/init.lua' }"
+          make test
