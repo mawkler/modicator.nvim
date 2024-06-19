@@ -17,7 +17,6 @@ local M = {}
 --- @field integration? { lualine?: ModicatorLualineIntegration }
 local options = {
   show_warnings = false,
-  cursor_line_nr_background = false,
   highlights = {
     defaults = {
       bold = false,
@@ -190,7 +189,7 @@ end
 M.set_cursor_line_highlight = function(hl_name)
   local hl_group = require('modicator.utils').get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
-  if options.cursor_line_nr_background == true then
+  if options.highlights.use_cursorline_background == true then
     local cl = require('modicator.utils').get_highlight('CursorLine')
     hl = vim.tbl_extend('keep', { bg = cl.bg }, hl)
   end
