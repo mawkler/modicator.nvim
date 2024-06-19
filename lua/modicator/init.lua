@@ -5,7 +5,6 @@ local M = {}
 --- @class ModicatorLualineIntegration
 --- @field enabled? boolean
 --- @field mode_section? LualineSectionLetter If `nil`, gets detected automatically. See `:help lualine-usage-and-customization`
---- @field cursor_line_nr_background? boolean If true, CursorLineNr will use the same background with CursorLine
 --- @field highlight? 'bg' | 'fg' Whether to use the highlight's foreground or background
 
 --- @class ModicatorHighlightOptions
