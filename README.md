@@ -101,7 +101,7 @@ require('modicator').setup({
       italic = false,
     },
     -- Use `CursorLine`'s background color for `CursorLineNr`'s background
-    use_cursorline_background = true,
+    use_cursorline_background = false,
   },
   integration = {
     lualine = {

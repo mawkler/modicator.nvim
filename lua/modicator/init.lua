@@ -22,7 +22,7 @@ local options = {
       bold = false,
       italic = false,
     },
-    use_cursorline_background = true,
+    use_cursorline_background = false,
   },
   integration = {
     lualine = {
