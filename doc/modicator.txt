@@ -1,4 +1,4 @@
-*modicator.txt*            For NVIM v0.8.0           Last change: 2024 June 19
+*modicator.txt*          For NVIM v0.8.0          Last change: 2024 October 21
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
@@ -116,18 +116,15 @@ DEFAULT CONFIGURATION: ~
       -- Warn if any required option is missing. May emit false positives if some
       -- other plugin modifies them, which in that case you can just ignore
       show_warnings = false,
-
-      --- If true, CursorLineNr will use the same background with CursorLine
-      cursor_line_nr_background = false,
-
       highlights = {
         -- Default options for bold/italic
         defaults = {
           bold = false,
           italic = false,
         },
+        -- Use `CursorLine`'s background color for `CursorLineNr`'s background
+        use_cursorline_background = false,
       },
-
       integration = {
         lualine = {
           enabled = true,
