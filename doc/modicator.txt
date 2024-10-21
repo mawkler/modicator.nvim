@@ -116,6 +116,10 @@ DEFAULT CONFIGURATION: ~
       -- Warn if any required option is missing. May emit false positives if some
       -- other plugin modifies them, which in that case you can just ignore
       show_warnings = false,
+
+      --- If true, CursorLineNr will use the same background with CursorLine
+      cursor_line_nr_background = false,
+
       highlights = {
         -- Default options for bold/italic
         defaults = {
@@ -123,6 +127,7 @@ DEFAULT CONFIGURATION: ~
           italic = false,
         },
       },
+
       integration = {
         lualine = {
           enabled = true,
