@@ -3,7 +3,7 @@ local modicator = require('modicator')
 local M = {}
 
 --- @param message string
-M.warn = function(message)
+function M.warn(message)
   if modicator.get_options().show_warnings then
     local warning = string.format('modicator.nvim: %s', message)
     vim.notify(warning, vim.log.levels.WARN)
@@ -11,7 +11,7 @@ M.warn = function(message)
 end
 
 --- @param message string
-M.inform = function(message)
+function M.inform(message)
   if modicator.get_options().show_warnings then
     local warning = string.format('modicator.nvim: %s', message)
     vim.notify(warning, vim.log.levels.INFO)
@@ -20,13 +20,13 @@ end
 
 --- @param hl_group string
 --- @return boolean
-M.highlight_exists = function(hl_group)
+function M.highlight_exists(hl_group)
   local hl = vim.api.nvim_get_hl(0, { name = hl_group })
   return not vim.tbl_isempty(hl)
 end
 
 --- @return table<string>
-M.get_highlights = function()
+function M.get_highlights()
   local modes = require('modicator').modes
   return vim.tbl_map(function(mode)
     return mode .. 'Mode'
@@ -36,7 +36,7 @@ end
 --- Gets the highlight `group`.
 --- @param hl_name string
 --- @return table<string, any>
-M.get_highlight = function(hl_name)
+function M.get_highlight(hl_name)
   return vim.api.nvim_get_hl(0, { name = hl_name, link = false })
 end
 

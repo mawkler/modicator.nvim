@@ -33,8 +33,11 @@ local options = {
   },
 }
 
+---@type integer?
+local augroup_id = nil
+
 --- @return ModicatorOptions
-M.get_options = function()
+function M.get_options()
   return options
 end
 
@@ -115,7 +118,7 @@ local function mode_name_from_mode(mode)
 end
 
 --- @param mode string
-M.hl_name_from_mode = function(mode)
+function M.hl_name_from_mode(mode)
   local mode_name = mode_name_from_mode(mode)
   return mode_name .. 'Mode'
 end
@@ -183,10 +186,9 @@ local function set_highlight_groups()
   update_mode()
 end
 
---- Set the foreground and background color of 'CursorLineNr'. Accepts any
---- highlight definition map that `vim.api.nvim_set_hl()` does.
---- @param hl_name string
-M.set_cursor_line_highlight = function(hl_name)
+--- Set the foreground and background color of 'CursorLineNr'
+--- @param hl_name string Name of mode highlight group
+function M.set_cursor_line_highlight(hl_name)
   local hl_group = require('modicator.utils').get_highlight(hl_name)
   local hl = vim.tbl_extend('force', options.highlights.defaults, hl_group)
   if options.highlights.use_cursorline_background == true then
@@ -195,14 +197,15 @@ M.set_cursor_line_highlight = function(hl_name)
   end
   api.nvim_set_hl(0, 'CursorLineNr', hl)
 
-  local is_register_executing = vim.fn.reg_executing() ~= ""
+  local register_is_executing = vim.fn.reg_executing() ~= ""
 
   -- Workaround for https://github.com/neovim/neovim/issues/25851
-  if not vim.o.lazyredraw and not is_register_executing then
+  if not vim.o.lazyredraw and not register_is_executing then
     vim.cmd.redraw()
   end
 end
 
+---@return integer augroup Augroup ID
 local function create_autocmds()
   local augroup = api.nvim_create_augroup('Modicator', {})
   -- NOTE: VimEnter loads after user's configuration is loaded
@@ -221,17 +224,36 @@ local function create_autocmds()
     callback = set_highlight_groups,
     group = augroup,
   })
+
+  return augroup
+end
+
+--- Enable Modicator
+function M.enable()
+  set_highlight_groups()
+
+  api.nvim_set_hl(0, 'CursorLineNr', { link = 'NormalMode' })
+
+  augroup_id = create_autocmds()
+end
+
+--- Disable Modicator
+function M.disable()
+  if augroup_id then
+    api.nvim_del_augroup_by_id(augroup_id)
+    augroup_id = nil
+  end
+
+  require('modicator.backup').restore_default_cursorline_hl()
 end
 
 --- @param opts ModicatorOptions?
 function M.setup(opts)
   options = vim.tbl_deep_extend('force', options, opts or {})
 
-  set_highlight_groups()
+  require('modicator.backup').backup_default_cursorline_hl()
 
-  vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'NormalMode' })
-
-  create_autocmds()
+  M.enable()
 end
 
 return M
