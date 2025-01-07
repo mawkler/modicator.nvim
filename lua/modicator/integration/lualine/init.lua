@@ -100,7 +100,7 @@ end
 
 --- Set mode highlights based on lualine's mode highlights
 --- @param mode_section LualineSectionLetter?
-M.use_lualine_mode_highlights = function(mode_section)
+function M.use_lualine_mode_highlights(mode_section)
   mode_section = mode_section or get_mode_section_letter()
   -- If lualine doesn't have a `mode` section and none was passed in
   if mode_section == nil then
