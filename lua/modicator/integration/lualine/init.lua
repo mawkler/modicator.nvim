@@ -107,7 +107,7 @@ function M.use_lualine_mode_highlights(mode_section)
     local message = "'integration.lualine.enabled' is true, but no lualine "
         .. "mode section was found. Please set it manually in "
         .. "'integration.lualine.mode_section'"
-    require('modicator.utils').warn(message)
+    require('modicator.notifications').warn(message)
     return
   end
 

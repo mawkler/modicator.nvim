@@ -41,65 +41,6 @@ function M.get_options()
   return options
 end
 
---- @return table
-local function get_missing_options(opts)
-  return vim.iter(opts):filter(function(opt) return not vim.o[opt] end)
-end
-
-local function warn_missing_options(opts)
-  for _, opt in pairs(opts) do
-    if not vim.o[opt] then
-      local message = string.format(
-        'Modicator requires `%s` to be set. Run `:set %s` or add `vim.o.%s '
-        .. '= true` to your init.lua',
-        opt,
-        opt,
-        opt
-      )
-      require('modicator.utils').warn(message)
-    end
-  end
-end
-
---- @param opts table
-local function check_deprecated_config(opts)
-  if opts.highlights and opts.highlights.modes then
-    local message = 'configuration of highlights has changed to highlight '
-        .. 'groups rather than using `highlights.modes`. Check `:help '
-        .. 'modicator-configuration` to see the new configuration API.'
-    require('modicator.utils').warn(message)
-  end
-end
-
-local function show_warnings()
-  if options.show_warnings then
-    local missing_options = get_missing_options({
-      'cursorline',
-      'number',
-      'termguicolors',
-    }):totable()
-
-    if #missing_options > 0 then
-      warn_missing_options(missing_options)
-
-      local message = 'If you\'ve you have already set '
-          .. 'those options in your config, this warning is likely '
-          .. 'caused by another plugin temporarily modifying those '
-          .. 'options for this buffer. If Modicator works as expected in '
-          .. 'other buffers you can remove the `show_warnings` option '
-          .. 'from your Modicator configuration.'
-      require('modicator.utils').inform(message)
-    end
-
-    check_deprecated_config(options)
-  end
-end
-
-local function lualine_is_loaded()
-  local ok, _ = pcall(require, 'lualine')
-  return ok
-end
-
 local function mode_name_from_mode(mode)
   local mode_names = {
     ['n']  = 'Normal',
@@ -175,6 +116,11 @@ local function set_fallback_highlight_groups()
   end
 end
 
+local function lualine_is_loaded()
+  local ok, _ = pcall(require, 'lualine')
+  return ok
+end
+
 local function set_highlight_groups()
   if lualine_is_loaded() and options.integration.lualine.enabled then
     local mode_section = options.integration.lualine.mode_section
@@ -211,7 +157,7 @@ local function create_autocmds()
   -- NOTE: VimEnter loads after user's configuration is loaded
   api.nvim_create_autocmd('VimEnter', {
     callback = function()
-      show_warnings()
+      require('modicator.notifications').show_warnings()
       update_mode()
     end,
     group = augroup,
