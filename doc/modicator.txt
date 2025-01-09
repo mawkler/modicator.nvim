@@ -1,4 +1,4 @@
-*modicator.txt*          For NVIM v0.8.0          Last change: 2024 October 21
+*modicator.txt*          For NVIM v0.8.0          Last change: 2025 January 09
 
 ==============================================================================
 Table of Contents                                *modicator-table-of-contents*
