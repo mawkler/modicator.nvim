@@ -1,22 +1,4 @@
-local modicator = require('modicator')
-
 local M = {}
-
---- @param message string
-function M.warn(message)
-  if modicator.get_options().show_warnings then
-    local warning = string.format('modicator.nvim: %s', message)
-    vim.notify(warning, vim.log.levels.WARN)
-  end
-end
-
---- @param message string
-function M.inform(message)
-  if modicator.get_options().show_warnings then
-    local warning = string.format('modicator.nvim: %s', message)
-    vim.notify(warning, vim.log.levels.INFO)
-  end
-end
 
 --- @param hl_group string
 --- @return boolean
