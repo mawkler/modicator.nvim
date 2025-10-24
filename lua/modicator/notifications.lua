@@ -15,7 +15,7 @@ local function warn_missing_options(opts)
         opt,
         opt
       )
-      require('modicator.utils').warn(message)
+      require('modicator.notifications').warn(message)
     end
   end
 end
@@ -26,7 +26,7 @@ local function check_deprecated_config(opts)
     local message = 'configuration of highlights has changed to highlight '
         .. 'groups rather than using `highlights.modes`. Check `:help '
         .. 'modicator-configuration` to see the new configuration API.'
-    require('modicator.utils').warn(message)
+    require('modicator.notifications').warn(message)
   end
 end
 
@@ -49,7 +49,7 @@ function M.show_warnings()
           .. 'options for this buffer. If Modicator works as expected in '
           .. 'other buffers you can remove the `show_warnings` option '
           .. 'from your Modicator configuration.'
-      require('modicator.utils').inform(message)
+      require('modicator.notifications').inform(message)
     end
 
     check_deprecated_config(options)
